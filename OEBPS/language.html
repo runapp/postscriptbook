@@ -1,0 +1,122 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <title>Language Concepts</title>
+    <link rel="stylesheet" type="text/css" href="postscript.css" />
+  </head>
+  <body>
+    
+    <h1><a name="language">Language Concepts</a></h1>
+
+    <div class="navbar">
+      <a href="graphics.html">Previous Page</a>
+      &bull;
+      <a href="postscript.html">Main Page</a>
+      &bull;
+      <a href="programming.html">Next Page</a>
+    </div>
+
+
+    <p>As a programming language, PostScript is particularly simple. There
+      are really only a few concepts that need to be sketched out.</p>
+    
+    <dl>
+      <dt><a name="comment"></a><b>Comment</b></dt>
+      
+      <dd>A comment in PostScript is any text preceded by a &ldquo;%&rdquo;. The special
+	comment &ldquo;%!&rdquo; as the first two characters of a PostScript program is seen
+	as a tag marking the file as PostScript code by many systems (including
+	Unix&rsquo;s <code>lpr</code> command). It is a good idea to start every PostScript document
+	with a &ldquo;%!&rdquo;... doing so will ensure that every spooler and printer the
+	document may encounter will recognize it as PostScript code.</dd>
+
+      <dt><a name="stack"></a><b>Stack</b></dt>
+      
+      <dd>There are several stacks in a PostScript system, but only two are important
+	for this guide: the operand stack, and the dictionary stack. The operand
+	stack is where arguments to procedures (or operators, in PostScript jargon)
+	are pushed prior to use. The dictionary stack is for dictionaries, and
+	it provides storage for variables.</dd>
+      
+      <dt><a name="dictionary"></a><b>Dictionary</b></dt>
+      
+      <dd>A dictionary is a collection of name-value pairs. All named variables
+	are stored in dictionaries. Also, all available operators are stored in
+	dictionaries along with their code. The dictionary stack is a stack of
+	all currently open dictionaries. When a program refers to some key, the
+	interpreter wanders down the stack looking for the first instance of that
+	key in a dictionary. In this manner, names may be associated with variables
+	and a simple form of scoping is implemented. Conveniently, dictionaries
+	may be given names and be stored in other dictionaries.</dd>
+
+      <dt><a name="name"></a><b>Name</b></dt>
+
+      <dd>A name is any sequence of characters that can not be interpreted as
+	a number. With the exception of spaces and certain reserved characters
+	(the characters &ldquo;(&rdquo;, &ldquo;)&rdquo;, &ldquo;[&rdquo;, &ldquo;]&rdquo;, &ldquo;&lt;&rdquo;, &ldquo;&gt;&rdquo;, &ldquo;{&rdquo;, &ldquo;}&rdquo;, &ldquo;/&rdquo;, and
+	&ldquo;%&rdquo;) any character may be part of a name. The name may even start with
+	digits (1Z is a name, for example), but you can get into problems with
+	them (1E10 is a real number). A name is seen as being a reference to some
+	value in a dictionary on the dictionary stack.</dd>
+    </dl>
+
+    <p>It should be noted that there are a couple of names that are legal in
+      PostScript which do not follow the above definition. These are the &ldquo;[&rdquo;
+      and the &ldquo;]&rdquo; operators. Yes, they <i>are</i> operators and are stored in
+      the dictionary. Some other names that might surprise you are: &ldquo;=&rdquo;, &ldquo;==&rdquo;,
+      &ldquo;&lt;&lt;&rdquo;, and &ldquo;&gt;&gt;&rdquo;.</p>
+    
+    <p>If a name is preceded by a slash, PostScript will place the name on
+      the stack as an operand. If the name has no slash, the interpreter will
+      look up its value in the dictionary stack. If the value is a procedure
+      object, the procedure will be evaluated. If the value is not a procedure,
+      the value will be pushed onto the operand stack.</p>
+    
+    <dl>
+      <dt><a name="number"></a><b>Number</b></dt>
+
+      <dd>PostScript supports integers and reals. You can express numbers in
+	two forms: radix form, and scientific notation. Radix form is a number
+	of the form <i>radix</i>#<i>value</i> where <i>radix</i> specifies the
+	base for <i>value</i>. Scientific notation is the standard <i>mantissa</i>E<i>exponent</i>
+	form used in most languages.</dd>
+
+      <dt><a name="string"></a><b>String</b></dt>
+
+      <dd>Strings are, of course, just strings of characters. There are two ways
+	of expressing strings in Level 1 PostScript. The most common way is to
+	wrap your text in parentheses. For example the string &ldquo;This is a string&rdquo;
+	would be written as <tt>(This is a string)</tt>. You can also express a
+	string as hexadecimal codes in angle brackets. For example, the string
+	&ldquo;ABC&rdquo; would be expressed as <tt>&lt;414243&gt;</tt>. There are
+	several <a href="escapes.html">escape codes</a>
+	that may be used in the parenthesis format of strings.</dd>
+
+      <dt><a name="array"></a><b>Array</b></dt>
+      
+      <dd>Arrays in PostScript are like arrays in any other language. Arrays
+	may contain objects of different type, and they are written as a list of
+	objects surrounded by brackets. For instance, <tt>[12 /Foo 5]</tt> is a
+	three element array containing the number 12, the name Foo, and the number
+	5.</dd>
+
+      <dt><a name="procedure"></a><b>Procedure</b></dt>
+      
+      <dd>A procedure is your way of defining new operators. A procedure is an
+	array that is executable and is written with braces rather than brackets.
+	For example, a procedure to square the top element on the stack might be
+	written as: <tt>{<a href="operators.html#dup">dup</a>
+	  mul}</tt>. We can define this procedure to be the square operator with:
+	<tt>/square {dup mul} <a href="operators.html#def">def</a></tt>.</dd>
+    </dl>
+    
+    <div class="navbar">
+      <a href="graphics.html">Previous Page</a>
+      &bull;
+      <a href="postscript.html">Main Page</a>
+      &bull;
+      <a href="programming.html">Next Page</a>
+    </div>
+
+</body>
+</html>

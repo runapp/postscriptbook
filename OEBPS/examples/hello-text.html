@@ -1,0 +1,34 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <title>Text Example</title>
+    <link rel="stylesheet" type="text/css" href="../postscript.css" />
+  </head>
+  <body>
+    <h1>Text Example</h1>
+
+    <div class="navbar">
+      <a href="../examples.html">Example Index</a>
+    </div>
+
+    <p><a href="hello-text.ps">Try it.</a></p>
+
+<PRE>
+%!
+% Sample of printing text
+
+/Times-Roman findfont   % Get the basic font
+20 scalefont            % Scale the font to 20 points
+setfont                 % Make it the current font
+
+newpath                 % Start a new path
+72 72 moveto            % Lower left corner of text at (72, 72)
+(Hello, world!) show    % Typeset &quot;Hello, world!&quot;
+
+showpage
+</PRE>
+    <div class="navbar">
+      <a href="../examples.html">Example Index</a>
+    </div>
+  </body>
+</html>

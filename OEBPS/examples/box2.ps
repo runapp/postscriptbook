@@ -1,0 +1,14 @@
+%!
+%% Draws a one square inch box and inch in from the bottom left
+%% This example uses relative coordinates on the lines
+
+/inch {72 mul} def	% Convert inches->points (1/72 inch)
+
+newpath			% Start a new path
+1 inch 1 inch moveto	% an inch in from the lower left
+1 inch 0 inch rlineto	% bottom side
+0 inch 1 inch rlineto	% right side
+-1 inch 0 inch rlineto	% top side
+closepath		% Automatically add left side to close path
+stroke			% Draw the box on the paper
+showpage		% We're done... eject the page

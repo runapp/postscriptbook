@@ -1,0 +1,86 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <title>Encapsulated PostScript</title>
+    <link rel="stylesheet" type="text/css" href="postscript.css" />
+  </head>
+  <body>
+    <h1><a name="eps">Encapsulated PostScript</a></h1>
+
+    <div class="navbar">
+      <a href="postscript.html">Main Page</a>
+    </div>
+
+    <h2><a name="whatisit">What is Encapsulated PostScript?</a></h2>
+
+    <p>At some point, you may want to include some nice PostScript image into
+      a document. There are a number of problems associated with this, but the
+      main one is that your page layout program needs to know how big the image
+      is, and how to move it to the correct place on the page. Encapsulated PostScript
+      (<acronym>EPS</acronym>) is that part of Adobe&rsquo;s Document Structuring Convention that provides
+      this information.</p>
+
+    <h2><a name="whatisdsc">What Is the Document Structuring Convention?</a></h2>
+    
+    <p>The <acronym>DSC</acronym> is a special file format for PostScript documents. The full
+      details for the <acronym>DSC</acronym> can (and should) be gotten from Adobe. If you are writing
+      a PostScript printer driver or other utility which will be used by a large
+      number of people to create or manipulate PostScript documents, do not even
+      think about writing it without making it <acronym>DSC</acronym>-compliant. You will save yourself
+      and your users a lot of headaches.</p>
+
+    <p>Although the full <acronym>DSC</acronym> is beyond the scope of this guide, the most basic
+      rules can be explained. A <acronym>DSC</acronym>-compliant document is an ordinary PostScript
+      document with a number of comments added. These comments provide information
+      to any post-processors which work with the files. Some comments strictly
+      provide information, others are used to structure the document into sections,
+      which may be shuffled or processed in other ways by the post-processor.</p>
+
+    <p>Every <acronym>DSC</acronym>-compliant document is indicated by having the comment <code>%!PS-Adobe
+	3.0</code> as the first line. This comment is a flag to indicate that the
+      document is compliant. You should never use this comment unless your document
+      really is <acronym>DSC</acronym> compliant. There are many other parts to proper <acronym>DSC</acronym>. A document
+      which follows the <acronym>DSC</acronym> can be manipulated in many ways. In particular, post-processors
+      can shuffle the pages, print two or more pages on a side, and so on. The
+      printer drivers from some notable companies do not follow the <acronym>DSC</acronym>, and
+      their PostScript documents are, therefore, impossible to work with once
+      they&rsquo;ve been generated.</p>
+
+    <h2><a name="whatabouteps">Now, What About <acronym>EPS</acronym>?</a></h2>
+
+    <p>An <acronym>EPS</acronym> file is a PostScript file which follows the <acronym>DSC</acronym> and which follows
+      a couple of other rules. These rules can be summarized as follows:</p>
+
+    <ul>
+      <li>The first line must be <code>%!PS-Adobe EPSF-3.0</code></li>
+      
+      <li>The file must make use of the BoundingBox comment</li>
+      
+      <li>The file should be a single page image (in <acronym>DSC</acronym> terms, the <code>%%Pages</code>
+	comment must have a value of 0 or 1).</li>
+
+      <li>The file should not use any <a href="verbotten.html">operators</a>
+	which affect the global state.</li>
+
+      <li>Finally, the <acronym>EPS</acronym> file should not use <a href="operators.html#showpage">showpage</a>.
+	Actually, Adobe says that it is fine to use showpage in your <acronym>EPS</acronym> files.
+	Officially, it is the responsibility of the importing application to redefine
+	showpage so that the <acronym>EPS</acronym> file does not actually eject the page. Still,
+	in creating <acronym>EPS</acronym> files, it would be wise not to use this operator.</li>
+    </ul>
+
+    <h2><a name="boundingbox">BoundingBox</a></h2>
+    
+    <p>The BoundingBox comment is used in <acronym>DSC</acronym> to indicate where the actual
+      image will be on a page. The comment describes a rectangle which completely
+      encloses the image. The form of the comment is: <b>%%BoundingBox:</b> <i>llx</i>
+      <i>lly</i> <i>urx</i> <i>ury</i>. For instance, suppose I have an image
+      which extends from <i>x</i>=72 to <i>x</i>=144 and from <i>y</i>=150 to
+      <i>y</i>=170. The BoundingBox comment in the document should then be: <code>%%BoundingBox:
+	72 150 144 170</code>.</p>
+
+    <div class="navbar">
+      <a href="postscript.html">Main Page</a>
+    </div>
+  </body>
+</html>

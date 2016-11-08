@@ -1,0 +1,66 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <title>Drawing a Raster Image</title>
+    <link rel="stylesheet" type="text/css" href="../postscript.css" />
+  </head>
+  <body>
+    <h1>Drawing a Raster Image</h1>
+
+    <div class="navbar">
+      <a href="../examples.html">Example Index</a>
+    </div>
+
+    <p><a href="smile.ps">Try it.</a></p>
+
+<pre>
+%!PS-Adobe-3.0
+
+% A simple smiley face
+
+gsave                  % We're mucking about with graphics state... save the original
+  72 72 translate      % position the lower left at (72, 72)
+  72 72 scale          % make the image 1 inch square
+  8                    % 8 columns in the image
+  8                    % 8 rows in the image
+  1                    % 1-bit per pixel: black and white
+  [8 0 0 8 0 0]        % map the unit square to (0, 0) - (8, 8)
+  {&lt;c3bd665a7e5abdc3&gt;} % the image data as a hex-encoded string
+  image                % actually draw the image
+grestore
+
+% A 16-shade horizontal gradient
+
+gsave
+  216 72 translate     % lower-left of images at (216, 72)
+  72 144 scale         % size of rendered image is 72 points by 72 points
+  16                   % 16 pixels wide
+  1                    % 1 pixel high
+  4                    % 4 bits per pixel
+  [16 0 0 1 0 0]       % transform array... maps unit square to pixels
+  {&lt;0123456789ABCDEF&gt;} % the image data itself
+  image                % let's draw!
+grestore
+
+% A 16-tone color gradient from green to blue
+
+gsave
+  360 72 translate
+  72 144 scale         % size of rendered image is 72 points by 72 points
+  16                   % number of samples per line
+  1                    % number of lines
+  4                    % bits per color channel (1, 2, 4, or 8)
+  [16 0 0 1 0 0]       % transform array... maps unit square to pixels
+  {&lt;0000000000000000&gt;} % the red image data
+  {&lt;FEDCBA9876543210&gt;} % the green image data
+  {&lt;0123456789ABCDEF&gt;} % the blue image data
+  true                 % pull channels from separate sources
+
+  colorimage
+grestore
+</pre>
+    <div class="navbar">
+      <a href="../examples.html">Example Index</a>
+    </div>
+  </body>
+</html>

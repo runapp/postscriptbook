@@ -1,0 +1,272 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <title>Frequently Asked Questions</title>
+    <link rel="stylesheet" type="text/css" href="postscript.css" />
+  </head>
+  <body>
+    <h1>Frequently Asked Questions</h1>
+
+    <div class="navbar">
+      <a href="postscript.html">Main Page</a>
+    </div>
+
+    <p>I have received a number of questions from readers, and many of them
+      are the same. Since these seem to be popular questions, I thought I would
+      list them here, along with my usual answers. Of course, you will also find
+      the <a href="http://www.faqs.org/faqs/by-newsgroup/comp/comp.lang.postscript.html"><acronym>FAQ</acronym></a>
+      for the comp.lang.postscript Usenet group to be useful. There are far more
+      <acronym>FAQ</acronym>s in that list than are here. By the
+      way, if anyone knows of a better answer to any of these question, let me
+      <a href="contacting.html">know</a>.</p>
+
+    <ul class="faq">
+      <li><a href="#conversion">Is there a utility to convert a PostScript
+	    file into my favorite word processors format?</a></li>
+      
+      <li><a href="#nonpostscript">I have a Hawat-Pickford 520xz ink jet printer
+	    without PostScript, is there anyway I can print PostScript files on it?</a></li>
+      
+      <li><a href="#preview">Can you point me to a good previewer for my computer?</a></li>
+      
+      <li><a href="#acrobat">Can you tell me X about Acrobat and <acronym>PDF</acronym> files?</a></li>
+      
+      <li><a href="#print">How do I print out a PostScript file from my computer?</a></li>
+      
+      <li><a href="#toospecific">My company has an Acme Laz-o-Tron typesetter.
+	    We're having problems printing out a set of color separations for a <acronym>TIFF</acronym>
+	    photograph processed by FotoWerks Pro+. Why are the separations coming
+	    out wrong?</a></li>
+      
+      <li><a href="#tobuyornot">I'm looking at two printers, one has PostScript
+	    while the other does not. Which should I buy?</a></li>
+
+      <li><a href="#concat">Is it possible to concatenate two PostScript files together into a single file?</a></li>
+
+      <li><a href="#ps2pdf">Is it possible to create a <acronym>PDF</acronym> from a PostScript file?</a></li>
+    </ul>
+    
+    <p class="faq"><a name="conversion">Is there a utility to convert a PostScript
+	file into my favorite word processors format?</a></p>
+    
+    <p>Short answer: no.</p>
+    
+    <p>Long answer: Maybe. There is a utility to convert PostScript files into
+      ASCII files (it tries to extract the text), but it can not work on every
+      PostScript file. The problem here is that PostScript is a full programming
+      language, and there are many ways to accomplish a given thing. It would
+      be next to impossible for a program to look at some piece of PostScript
+      and decide what the contents are. It would be possible to write a program
+      which would accept some subset of PostScript files and convert them to
+      some useful format, but it would be difficult to write (and it could not
+      handle all possible PostScript files).</p>
+
+    <p class="faq"><a name="nonpostscript"></a>I have a Hawat-Pickford
+	520xz ink jet printer without PostScript, is there anyway I can print PostScript
+	files on it?</p>
+
+    <p>Yep. There are a number of PostScript interpreters which run on your
+      computer and can print out PostScript files. There are versions of these
+      kinds of utilities for the Mac and for DOS/Windows machines. I have never
+      used one of these utilities, so I can not recommend any particular one.
+      Go to your friendly neighborhood dealer or your favorite catalog to see
+      what they have. There is a section in the PostScript <acronym>FAQ</acronym> on this issue.
+      You may also want to have a look at
+      <a href="http://www.cs.wisc.edu/~ghost/index.html">GhostScript</a>.
+      GhostScript can print PostScript files on certain printers.</p>
+
+    <p class="faq"><a name="preview"></a>Can you point me to a good previewer
+	for my computer?</p>
+
+    <p>My first recommendation is <a href="http://www.cs.wisc.edu/~ghost/index.html">GhostScript</a>.
+      Hey, it's free; and it does a good job. It is also able to convert PostScript files to a number
+      of other graphics formats, so it can be handy there.
+      There are also a number of commercial previewers. I have not used any of
+      these commercial packages, so I can not recommend any of them in particular.</p>
+
+    <p class="faq"><a name="acrobat">Can you tell me X about Acrobat and <acronym>PDF</acronym> files?</a></p>
+    
+    <p>Nope. I don't know anything about Acrobat or <acronym>PDF</acronym> files. Check out the
+      <a href="http://www.adobe.com">Adobe</a> website. You may find the information
+      you need there.</p>
+
+    <p class="faq"><a name="print">How do I print out a PostScript file from my	computer?</a></p>
+
+    <p>The procedures and tools vary, depending upon the machine. I'm going
+      to assume that you have a PostScript enabled printer and either received
+      or wrote the PostScript file (if you have the application that generated
+      the file, you should just use your application's print command or menu).</p>
+
+    <dl>
+      <dt><b>DOS/PC</b></dt>
+
+      <dd>Assuming your PostScript printer is on port LPT1: (it really doesn't
+	matter), all you need to do is:</dd>
+
+      <dd><code>COPY FILE.PS LPT1:</code></dd>
+
+      <dd>where <code>FILE.PS</code> is whatever your file is.</dd>
+
+      <dt><b>Mac OS X</b></dt>
+      <dd>
+	Mac OS X comes with a built-in utility to convert PostScript files to <acronym>PDF</acronym>.
+	Just opening the PostScript file from the Finder is sufficient to start the conversion.
+	If you want to print the file and you do not have a PostScript printer, you can just print
+	the <acronym>PDF</acronym> file you got normally. If you do have a PostScript printer, you will
+	probably have to follow the instructions for Unix below.
+      </dd>
+
+      <dt><b>UNIX and its cousins</b></dt>
+
+      <dd>Depending upon your system, just printing the file as if it were a text
+	file <i>should</i> send it to the printer correctly. Most UNIX systems
+	are clever enough to recognize the PostScript file from the <code>%!</code>
+	comment at the beginning of the file. For example, on a BSD system:</dd>
+
+      <dd><code>lpr file.ps</code></dd>
+      
+      <dd>should do the trick.</dd>
+    </dl>
+
+
+    <p class="faq"><a name="toospecific">My company has an Acme Laz-o-Tron typesetter.
+	We're having problems printing out a set of color separations for a <acronym>TIFF</acronym>
+	photograph processed by FotoWerks Pro+. Why are the separations coming
+	out wrong?</a></p>
+
+    <p>Beats me.</p>
+
+    <p>I'm afraid the basic fact of the matter is that I'm not very bright.
+      Nope. Nope. Nope. I'm not very bright. I also don't know a heck of a lot
+      (you know, there's a joke: a dog, sitting in front of a computer says to
+      his doggy friend, &ldquo;You know, on the Internet, no one knows you're
+      a dog...&rdquo; for &ldquo;a dog&rdquo; substitute &ldquo;not an expert,&rdquo;
+      and you've got something). I do know a fair amount about PostScript. Despite
+      my deep and abiding love for fine typography, however, and despite the
+      fact that ink runs in my blood, I don't know much about the printing industry
+      or of the equipment they use.</p>
+
+    <p>If you have questions about your software or your printer, I recommend
+      contacting the manufacturer or a posting a question to a newsgroup (if
+      there is a relevant one). I just do not know the particulars on different
+      printers or software (unless it's something I own or use).</p>
+
+    <p class="faq"><a name="tobuyornot">I'm looking at two printers, one has PostScript
+	while the other does not. Which should I buy?</a></p>
+
+    <p>This is a common and very good question (there is a related one on whether
+      or not to buy a PostScript extension for an existing printer). The answer,
+      as it usually does, boils down to a definite, &ldquo;It depends.&rdquo;</p>
+
+    <p>If your main printing task consists of printing the monthly report or
+      letters to clients, friends, family members, or whomever, then you will
+      probably find PostScript to be an extravagance. This is especially true
+      if you have no interest in mucking about with fonts or graphics. In other
+      words, for light-duty, mainly text, print once and send to whomever kind
+      of work, the answer is, &ldquo;No.&rdquo;</p>
+
+    <p>If you are a desktop publisher, you are writing a book and want to send
+      the book to your publisher electronically, or you do a lot of graphics
+      work and want the graphics to look good regardless of the printer, the
+      answer is yes. In all of these cases, you have a complex printing task
+      and may want to proof your document at home or in the office but then send
+      it out for final (higher quality) printing. Generally speaking, the same
+      PostScript file will look the same regardless of which PostScript printer
+      you use, with one exception: if one printer is capable of better print
+      quality (finer lines, smoother curves, gentler shades of grey) than the
+      other, your document should benefit from these increased capabilities without
+      the PostScript file's needing to be changed. You are benefiting from PostScript's
+      device independence.</p>
+
+    <p>As for graphics intensive work, I find the <acronym>EPS</acronym> format to be the best
+      for line drawing type graphics (<i>i.e.</i> no bitmap images) that I will
+      want to include in a document. I very often want to print an image generated
+      by one package when the word processor may be from a different vendor.
+      Many times (incredible to tell) I sometimes need to include a graphic made
+      on one computer system in a document on a completely different system!
+      In such a heterogeneous environment, <acronym>EPS</acronym> graphics are just about the only
+      reasonable option. Also, many top-quality drafting/painting programs generate
+      their best output in <acronym>EPS</acronym> (on some windowing systems, the built-in graphic
+      format can have a limited resolution that results in badly displaced elements
+      in a printed image). If you use <acronym>EPS</acronym> graphics, you <i>must</i> have a PostScript
+      enabled printer if you want to print them out with any quality at all.</p>
+
+    <p>As with most things in our complex universe, it all depends upon what
+      you are going to do. You must sit down and evaluate your needs and probable
+      work habits. If you think you will benefit from PostScript's unique characteristics
+      enough to justify the cost, then go for it.</p>
+
+    <p class="faq"><a name="concat" />Is it possible to concatenate two PostScript files together into a single file?</p>
+
+    <p>Yes and no. If you do not care about
+    being <acronym>DSC</acronym> compliant, then all you have to do is
+    to slap the two files together into one. If that does not work,
+    you could wrap each in a save/restore pair:</p>
+
+<pre>
+%!
+save
+  % contents of the first file
+restore
+save
+  % contents of the second file
+restore
+</pre>
+
+    <p>The problem with this approach is that it is not compliant with
+      the <acronym>DSC</acronym>, so you can not do anything with the
+      concatenated file. Previewers and print spoolers will have
+      problems recognizing pages and would not be able to shuffle them
+      appropriately. Other post-processing engines would fail to work
+      with them too (for instance, you would not be able to display
+      the file in <a href="nup.html">two up</a> format.</p>
+
+    <p>If the two PostScript files are <acronym>DSC</acronym>
+      compliant, came from the same tool, and use the same
+      resources (the acid test is if they
+      have the same preamble... the definitions at the start of the file
+      before you get to the first page), then you could concatenate the
+      files by starting with the common preamble, followed by the pages
+      of the first file, followed by the pages of the second file. You
+      would have to recognize the pages by looking at the page comments
+      much like we did in the post-processing examples.</p>
+
+    <p>You can not play this trick with files from different tools (or
+      with different preambles). The problem is that a page in a file
+      depends upon the definitions in the preamble, if you miss a
+      definition, or if two files have different definitions for the
+      same name, you really can not concatenate the files and keep the
+      result compliant with the <acronym>DSC</acronym>.</p>
+    
+    <p>There are various scripts available out there to do the
+      concatenation under these restrictions. Look around for tools
+      like &ldquo;psmerge,&rdquo; &ldquo;psconcat,&rdquo; and the
+      like, and see what might work for you (psmerge is part of the
+      psutils package and is available on many Unix work-alikes, and
+      comes bundled with Mac OS X).</p>
+
+    <p class="faq"><a name="ps2pdf" />Is it possible to create a <acronym>PDF</acronym> from a PostScript file?</p>
+
+    <p>Yes. <a href="http://www.cs.wisc.edu/~ghost/index.html">GhostScript</a>
+      comes with a utility called ps2pdf which will do the job. Also,
+      Mac OS X has the ability built-in: just double-click on the
+      PostScript file in the Finder, and it will convert the file
+      to <acronym>PDF</acronym> for you and give you an option to save
+      the results. I&rsquo;m sure there are other tools to do the job, too.</p>
+
+    <p class="faq">Is it true that you are one of the most stunningly attractive men on the net?</p>
+    
+    <p>Why, yes. How did you know?</p>
+    
+    <p>Okay, so maybe no one has ever asked me that. It was worth a shot. Maybe
+      you wouldn't have noticed.</p>
+
+    <p>By the way, you finished reading the <acronym>FAQ</acronym>, so here's a mailto link for you to
+      send me <a href="mailto:pjw@tailrecursive.org?subject=First%20Guide%20to%20PostScript">e-mail</a> if you don't see your
+      question here.</p>
+
+    <div class="navbar">
+      <a href="postscript.html">Main Page</a>
+    </div>
+  </body>
+</html>

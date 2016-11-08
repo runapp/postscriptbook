@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package version="2.0" unique-identifier="BookId" xmlns="http://www.idpf.org/2007/opf">
+  <metadata xmlns:opf="http://www.idpf.org/2007/opf" xmlns:dc="http://purl.org/dc/elements/1.1/">
+    <dc:identifier opf:scheme="UUID" id="BookId">urn:uuid:fa90dc39-30bf-43c6-8ed5-91e3f9cb1a3d</dc:identifier>
+    <dc:language>en</dc:language>
+    <dc:title>A First Guide to PostScript</dc:title>
+    <dc:date xmlns:opf="http://www.idpf.org/2007/opf" opf:event="modification">2016-11-08</dc:date>
+  </metadata>
+  <manifest>
+    <item id="ncx" href="toc.ncx" media-type="application/x-dtbncx+xml"/>
+    <item id="postscript.css" href="postscript.css" media-type="text/css"/>
+    <item id="books.html" href="books.html" media-type="application/xhtml+xml"/>
+    <item id="clipping.html" href="clipping.html" media-type="application/xhtml+xml"/>
+    <item id="color.html" href="color.html" media-type="application/xhtml+xml"/>
+    <item id="contacting.html" href="contacting.html" media-type="application/xhtml+xml"/>
+    <item id="draft.html" href="draft.html" media-type="application/xhtml+xml"/>
+    <item id="drawing.html" href="drawing.html" media-type="application/xhtml+xml"/>
+    <item id="eps.html" href="eps.html" media-type="application/xhtml+xml"/>
+    <item id="errors.html" href="errors.html" media-type="application/xhtml+xml"/>
+    <item id="escapes.html" href="escapes.html" media-type="application/xhtml+xml"/>
+    <item id="examples.html" href="examples.html" media-type="application/xhtml+xml"/>
+    <item id="faq.html" href="faq.html" media-type="application/xhtml+xml"/>
+    <item id="galley.html" href="galley.html" media-type="application/xhtml+xml"/>
+    <item id="graphics.html" href="graphics.html" media-type="application/xhtml+xml"/>
+    <item id="image.html" href="image.html" media-type="application/xhtml+xml"/>
+    <item id="index.html" href="index.html" media-type="application/xhtml+xml"/>
+    <item id="language.html" href="language.html" media-type="application/xhtml+xml"/>
+    <item id="mailme.html" href="mailme.html" media-type="application/xhtml+xml"/>
+    <item id="notes.txt" href="Misc/notes.txt" media-type="text/plain"/>
+    <item id="nup.html" href="nup.html" media-type="application/xhtml+xml"/>
+    <item id="operators.html" href="operators.html" media-type="application/xhtml+xml"/>
+    <item id="postprocess.html" href="postprocess.html" media-type="application/xhtml+xml"/>
+    <item id="postscript.html" href="postscript.html" media-type="application/xhtml+xml"/>
+    <item id="programming.html" href="programming.html" media-type="application/xhtml+xml"/>
+    <item id="resources.html" href="resources.html" media-type="application/xhtml+xml"/>
+    <item id="text.html" href="text.html" media-type="application/xhtml+xml"/>
+    <item id="transforms.html" href="transforms.html" media-type="application/xhtml+xml"/>
+    <item id="verbotten.html" href="verbotten.html" media-type="application/xhtml+xml"/>
+    <item id="what-is-it.html" href="what-is-it.html" media-type="application/xhtml+xml"/>
+  </manifest>
+  <spine toc="ncx">
+    <itemref idref="index.html"/>
+    <itemref idref="books.html"/>
+    <itemref idref="clipping.html"/>
+    <itemref idref="color.html"/>
+    <itemref idref="contacting.html"/>
+    <itemref idref="draft.html"/>
+    <itemref idref="drawing.html"/>
+    <itemref idref="eps.html"/>
+    <itemref idref="errors.html"/>
+    <itemref idref="escapes.html"/>
+    <itemref idref="examples.html"/>
+    <itemref idref="faq.html"/>
+    <itemref idref="galley.html"/>
+    <itemref idref="graphics.html"/>
+    <itemref idref="image.html"/>
+    <itemref idref="language.html"/>
+    <itemref idref="mailme.html"/>
+    <itemref idref="nup.html"/>
+    <itemref idref="operators.html"/>
+    <itemref idref="postprocess.html"/>
+    <itemref idref="postscript.html"/>
+    <itemref idref="programming.html"/>
+    <itemref idref="resources.html"/>
+    <itemref idref="text.html"/>
+    <itemref idref="transforms.html"/>
+    <itemref idref="verbotten.html"/>
+    <itemref idref="what-is-it.html"/>
+  </spine>
+  <guide>
+  </guide>
+</package>

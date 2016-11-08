@@ -1,0 +1,24 @@
+%!
+% Example of scaled image (text)
+
+/Times-Roman findfont 40 scalefont setfont
+
+gsave
+  72 72 moveto
+  0.5 1 scale		% Make the text narrow
+  (Narrow Text) show	% Draw it
+grestore
+
+gsave
+  72 144 moveto
+  1 2 scale		% Make the text tall
+  (Tall Text) show	% Draw it
+grestore
+
+gsave
+  72 216 moveto
+  2 0.5 scale		% Make the text wide and short
+  (Squeezed Text) show	% Draw it
+grestore
+
+showpage

@@ -1,0 +1,114 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <title>Adding Color</title>
+    <link rel="stylesheet" type="text/css" href="postscript.css" />
+  </head>
+  <body>
+    <h1><a name="color">Adding Color</a></h1>
+
+    <div class="navbar">
+      <a href="text.html">Previous Page</a>
+      &bull;
+      <a href="postscript.html">Main Page</a>
+      &bull;
+      <a href="transforms.html">Next Page</a>
+    </div>
+
+    <p>In recent years, color printers have become more common... to
+      the point where it is almost impossible to buy a black-and-white
+      printer. Fortunately, PostScript handles color documents quite
+      easily, and you do not have to learn much to add color to your
+      documents.</p>
+
+    <p>There are many, many ways to specify color. The science of
+      color reproduction and perception is very complex and
+      encompasses physics, chemistry, physiology, and psychology. PostScript
+      provides a great deal of flexibility on this front, providing
+      several different methods for specifying color to let you get as
+      close as possible to the color you want specifying it in the way
+      that is most natural in your application. I will discuss
+      only two methods here, however, because&mdash;frankly&mdash;I
+      know as much about color as a bee knows about ancient Phoenician.</p>
+
+    <h2><acronym>RGB</acronym></h2>
+
+    <p>The first method I will mention is the
+      so-called <acronym>RGB</acronym> colorspace. In this model, you
+      specify the red, green, and blue components of the color you want
+      to reproduce. This is model specifies color using the additive
+      primaries and will be very familiar to those who work with
+      monitors and computer graphics.</p>
+
+    <p>To specify a color using the <acronym>RGB</acronym> color
+      space, you can use the <a href="operators.html#setrgbcolor">setrgbcolor</a>
+      operator. This operator takes three operands: the red, green, and
+      blue components of the color you want (0 means none, 1 means
+      maximum). For example, to specify red, you can write <code>1 0 0
+      setrgbcolor</code>; and to get a dark yellow, you can
+      write <code>0.5 0 0.5 setrgbcolor</code>. Black is <code>0 0 0
+      setrgbcolor</code>, and white is <code>1 1 1 setrgbcolor</code>.</p>
+
+    <h2><acronym>CMYK</acronym></h2>
+
+    <p>Another way to specify color is
+      through the <acronym>CMYK</acronym> colorspace. In this model,
+      you specify color using the subtractive primaries more common in
+      the printing world: cyan, magenta, and yellow. To the primaries,
+      a black component is added, to allow you to control the tone of
+      the color (this is not necessary in the <acronym>RGB</acronym>
+      model, since you are controlling the intensity of the light
+      inherently).</p>
+
+    <p>To specify a color using the <acronym>CYMK</acronym> color
+      space, you can use the <a href="operators.html#setcymkcolor">setcymkcolor</a>
+      operator. This operator takes four operands: the cyan, yellow,
+      magenta, and black components of the color you want (0 means none, 1 means
+      maximum). For example, to specify red, you can write <code>0 1 1
+      0 setcymkcolor</code>; and to get a dark yellow, you can
+      write <code>0 1 0 0.5 setcymkcolor</code>.</p>
+
+    <p>One convenient property of PostScript is that color is handled
+      as a property of the ink in the graphics state just like the
+      gray level. In fact, the gray level set by setgray is really
+      just color. What this means is that you can set the color of a
+      line, or the color of a fill in exactly the same way as you set
+      the gray level. You just call the operator before you stroke the
+      line or fill the path. You can even use it to set the color of
+      text by calling the appropriate operator before you call show.</p>
+
+    <p>Since color works in such a similar way to the setgray
+      operator, I am providing you with a
+      complete <a href="examples/color.html">example</a>, but I
+      will not break it down here.</p>
+
+    <h2>A Warning</h2>
+
+    <p>I have really simplified things considerably in this
+      discussion. There are more than just two color spaces in
+      PostScript, and there are several features in PostScript to
+      allow for accurate color rendition. One thing that I&rsquo;ve
+      glossed over is that different devices reproduce color with
+      different degrees of accuracy (and different pigments not only
+      have different color-accuracy but will vary over time). Another
+      thing that I have glossed over is the fact that these two
+      models are focused around color reproduction: it is also
+      possible to specify color based on how it is perceived.</p>
+
+    <p>If you do not care about color reproduction to that level of
+      precision, then you do not need to worry about it. The color
+      operators I have described are sufficient. If you do, you know
+      far more about the matter than I do and will likely find the
+      features you need described in
+      the <acronym><a href="books.html#redbook">PLRM</a></acronym>.</p>
+
+    <div class="navbar">
+      <a href="text.html">Previous Page</a>
+      &bull;
+      <a href="postscript.html">Main Page</a>
+      &bull;
+      <a href="transforms.html">Next Page</a>
+    </div>
+  </body>
+</html>
+

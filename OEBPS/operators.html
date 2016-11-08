@@ -1,0 +1,1266 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <title>PostScript Operators</title>
+    <link rel="stylesheet" type="text/css" href="postscript.css" />
+  </head>
+  <body>
+    <h1>PostScript Operators</h1>
+
+    <div class="navbar">
+      <a href="postscript.html">Main Page</a>
+    </div>
+
+    <h2 class="opdef"><a name="add">Operator: add</a></h2>
+
+    <p><i>num1</i> <i>num2</i> <b>add</b> <i>num3</i></p>
+    
+    <p>This operator returns the addition of the two arguments.</p>
+    
+    <ul>
+      <li><a href="errors.html#stackunderflow">stackunderflow</a> </li>
+      
+      <li><a href="errors.html#typecheck">typecheck</a> </li>
+      
+      <li><a href="errors.html#undefinedresult">undefinedresult</a> </li>
+    </ul>
+    
+    <p>See also: </p>
+    
+    <ul>
+      <li><a href="operators.html#div">div</a> </li>
+      
+      <li><a href="operators.html#mul">mul</a> </li>
+      
+      <li><a href="operators.html#sub">sub</a> </li>
+    </ul>
+
+    <h2 class="opdef"><a name="arc">Operator: arc</a></h2>
+    
+    <p><i>x-coord</i> <i>y-coord</i> <i>r</i> <i>ang1</i> <i>ang2</i> <b>arc</b>
+      <b>-</b> </p>
+    
+    <p>This operator adds an arc to the current path. The arc is generated
+      by sweeping a line segment of length <i>r</i>, and tied at the point (<i>x-coord</i>
+      <i>y-coord</i>), in a counter-clockwise direction from an angle <i>ang1</i>
+      to an angle <i>ang2</i>. Note: a straight line segment will connect the
+      current point to the first point of the arc, if they are not the same.
+    </p>
+    
+    <ul>
+      <li><a href="errors.html#limitcheck">limitcheck</a> </li>
+      
+      <li><a href="errors.html#stackunderflow">stackunderflow</a> </li>
+      
+      <li><a href="errors.html#typecheck">typecheck</a> </li>
+    </ul>
+    
+    <h2 class="opdef"><a name="begin">Operator: begin</a></h2>
+    
+    <p><i>dict</i> <b>begin</b> <b>-</b> </p>
+    
+    <p>This operator pushes the dictionary <i>dict</i> onto the dictionary
+      stack. Where it can be used for <a href="operators.html#def">def</a> and
+      name lookup. This operator allows an operator to set up a dictionary for
+      its own use (e.g. for local variables).</p>
+    
+    <p>Errors: </p>
+    
+    <ul>
+      <li><a href="errors.html#dictstackoverflow">dictstackoverflow</a>
+      </li>
+      
+      <li><a href="errors.html#invalidaccess">invalidaccess</a>
+      </li>
+      
+      <li><a href="errors.html#stackunderflow">stackunderflow</a>
+      </li>
+      
+      <li><a href="errors.html#typecheck">typecheck</a>
+      </li>
+    </ul>
+    
+    <h2 class="opdef"><a name="bind">Operator: bind</a></h2>
+    
+    <p><i>procedure1</i> <b>bind</b> <i>procedure2</i> </p>
+    
+    <p>The bind operator goes through <i>procedure1</i> and replaces any operator
+      names with their associate operators. Names which do not refer to operators
+      are left alone. Operators within <i>procedure1</i> which have unrestricted
+      access will have bind called on themselves before they are inserted into
+      the procedure. The new procedure with operators instead of operator names
+      is returned on the stack as <i>procedure2</i>. </p>
+
+    <p>The main effect and use of this operator is to reduce the amount of
+      name lookup done by the interpreter. This speeds up execution and ties
+      down the behavior of operators. </p>
+
+    <p>Errors: </p>
+
+    <ul>
+      <li><a href="errors.html#typecheck">typecheck</a>
+      </li>
+    </ul>
+
+    <h2 class="opdef"><a name="clip">Operator: clip</a></h2>
+
+    <p><b>-</b> <b>clip</b> <b>-</b> </p>
+
+    <p>This operator intersects the current clipping path with the current
+      path and sets the current clipping path to the results. Any part of a path
+      drawn after calling this operator which extends outside this new clipping
+      area will simply not be drawn. If the given path is open, clip will treat
+      it as if it were closed. Also, clip does not destroy the current path when
+      it is finished... it may be used for other activities.</p>
+
+    <p>It is important to note that there is no easy way to restore the clip
+      path to a larger size once it has been set. The best way to set the clip
+      path is to wrap it in a <a href="operators.html#gsave">gsave</a>
+      and <a href="operators.html#grestore">grestore</a>
+      pair. </p>
+
+    <p>Errors: </p>
+
+    <ul>
+      <li><a href="errors.html#limitcheck">limitcheck</a></li>
+    </ul>
+
+    <h2 class="opdef"><a name="closepath">Operator: closepath</a></h2>
+
+    <p>- <b>closepath</b> - </p>
+
+    <p>This operator adds a line segment to the current path from the current
+      point to the first point in the path. This closes the path so that it may
+      be filled. </p>
+
+    <p>Errors:</p>
+
+    <ul>
+      <li><a href="errors.html#limitcheck">limitcheck</a>
+      </li>
+    </ul>
+
+    <p>Also see the following operators: </p>
+
+    <ul>
+      <li><b><a href="operators.html#newpath">newpath</a></b>
+      </li>
+
+      <li><b><a href="operators.html#moveto">moveto</a></b>
+      </li>
+
+      <li><b><a href="operators.html#lineto">lineto</a></b>
+      </li>
+    </ul>
+
+    <h2 class="opdef"><a name="charpath">Operator: charpath</a></h2>
+
+    <p><i>string</i> <i>bool</i> <b>charpath</b> <b>-</b></p>
+
+    <p>This operator takes the given string and appends the path which the
+      characters define to the current path. The result is can be used as any
+      other path for stroking, filling, or clipping.</p>
+
+    <p>The boolean argument informs charpath what to do if the font was not
+      designed to be stoked. If the boolean is true, the path will be modified
+      to be filled and clipped (but not stroked). If the boolean is false, the
+      path will be suitable to be stroked (but not filled or clipped). </p>
+
+    <ul>
+      <li><a href="errors.html#limitcheck">limitcheck</a> </li>
+
+      <li><a href="errors.html#nocurrentpoint">nocurrentpoint</a> </li>
+
+      <li><a href="errors.html#stackunderflow">stackunderflow</a> </li>
+
+      <li><a href="errors.html#typecheck">typecheck</a> </li>
+    </ul>
+
+    <p>See also: </p>
+
+    <ul>
+      <li><a href="operators.html#clip">clip</a> </li>
+
+      <li><a href="operators.html#fill">fill</a> </li>
+
+      <li><a href="operators.html#show">show</a> </li>
+
+      <li><a href="operators.html#stroke">stroke</a> </li>
+    </ul>
+
+    <h2 class="opdef"><a name="colorimage">Operator: colorimage</a></h2>
+
+    <p><i>width</i> <i>height</i> <i>bppc</i> <i>data_1</i> ... <i>data_n</i> <i>separate</i> <i>channels</i> <b>colorimage</b>
+      <b>-</b></p>
+
+    <p>
+      This operator draws a color image in the unit square from (0,0) to (1, 1).
+      The source information is a raster image <i>width</i> pixels wide by <i>height</i> pixels high.
+      The image is composed of <i>channels</i> color channels (1, 3, or 4), and each pixel is represented by
+      <i>bppc</i> bits in each channel.
+      If <i>separate</i> is false, there will be only one <i>data</i> operand.
+      Otherwise, there will be one for each channel.
+      The <i>data</i> operand can be a number of things, but is usually a procedure that returns a string of
+      bytes with the channel data each time it is called.
+      The procedure will be called repeatedly until all pixels have been processed.
+      The image is processed from left-to-right, top-to-bottom.
+    </p>
+
+    <ul>
+      <li><a href="errors.html#invalidaccess">invalidaccess</a> </li>
+
+      <li><a href="errors.html#ioerror">ioerror</a> </li>
+
+      <li><a href="errors.html#limitcheck">limitcheck</a> </li>
+
+      <li><a href="errors.html#rangecheck">rangecheck</a> </li>
+
+      <li><a href="errors.html#stackunderflow">stackunderflow</a> </li>
+
+      <li><a href="errors.html#typecheck">typecheck</a> </li>
+
+      <li><a href="errors.html#undefined">undefined</a> </li>
+
+      <li><a href="errors.html#undefinedresult">undefinedresult</a> </li>
+    </ul>
+
+    <p>See also: </p>
+
+    <ul>
+      <li><a href="operators.html#image">image</a> </li>
+    </ul>
+
+    <h2 class="opdef"><a name="curveto">Operator: curveto</a></h2>
+
+    <p><i>x1</i> <i>y1</i> <i>x2</i> <i>y2</i> <i>x3</i> <i>y3</i> <b>curveto</b>
+      <b>-</b></p>
+
+    <p>This operator draws a curve from the current point to the point (<i>x3</i>,
+      <i>y3</i>) using points (<i>x1</i>, <i>y1</i>) and (<i>x2</i>, <i>y2</i>)
+      as control points. The curve is a B&eacute;zier cubic curve. In such a
+      curve, the tangent of the curve at the current point will be a line segment
+      running from the current point to (<i>x1</i>, <i>y1</i>) and the tangent
+      at (<i>x3</i>, <i>y3</i>) is the line running from (<i>x3</i>, <i>y3</i>)
+      to (<i>x2</i>, <i>y2</i>).</p>
+
+    <ul>
+      <li><a href="errors.html#limitcheck">limitcheck</a> </li>
+
+      <li><a href="errors.html#nocurrentpoint">nocurrentpoint</a> </li>
+
+      <li><a href="errors.html#stackunderflow">stackunderflow</a> </li>
+
+      <li><a href="errors.html#typecheck">typecheck</a> </li>
+    </ul>
+
+    <p>See also: </p>
+
+    <ul>
+      <li><a href="operators.html#arc">arc</a> </li>
+
+      <li><a href="operators.html#lineto">lineto</a> </li>
+
+      <li><a href="operators.html#moveto">moveto</a> </li>
+    </ul>
+
+    <h2 class="opdef"><a name="def">Operator: def</a></h2>
+
+    <p><i>name</i> <i>value</i> <b>def</b> <b>-</b> </p>
+
+    <p>This operator associates the <i>name </i>with <i>value</i> in the dictionary
+      at the top of the dictionary stack. This operator essentially defines names
+      to have values in the dictionary and is used to define variables and operators.
+    </p>
+
+    <p>Errors: </p>
+
+    <ul>
+      <li><a href="errors.html#dictfull">dictfull</a>
+      </li>
+
+      <li><a href="errors.html#invalidaccess">invalidaccess</a>
+      </li>
+
+      <li><a href="errors.html#limitcheck">limitcheck</a>
+      </li>
+
+      <li><a href="errors.html#stackunderflow">stackunderflow</a>
+      </li>
+
+      <li><a href="errors.html#typecheck">typecheck</a>
+      </li>
+
+      <li><a href="errors.html#VMerror">VMerror</a>
+      </li>
+    </ul>
+
+    <h2 class="opdef"><a name="div">Operator: div</a></h2>
+
+    <p><i>num1</i> <i>num2</i> <b>div</b> <i>num3</i></p>
+
+    <p>This operator returns the result of dividing <i>num1</i> by <i>num2</i>.
+      The result is always a real.</p>
+
+    <ul>
+      <li><a href="errors.html#stackunderflow">stackunderflow</a> </li>
+
+      <li><a href="errors.html#typecheck">typecheck</a> </li>
+
+      <li><a href="errors.html#undefinedresult">undefinedresult</a> </li>
+    </ul>
+
+    <p>See also: </p>
+
+    <ul>
+      <li><a href="operators.html#add">add</a> </li>
+
+      <li><a href="operators.html#mul">mul</a> </li>
+
+      <li><a href="operators.html#sub">sub</a> </li>
+    </ul>
+
+    <h2 class="opdef"><a name="dup">Operator: dup</a></h2>
+
+    <p><i>object</i> <b>dup</b> <i>object</i> <i>object</i> </p>
+
+    <p>This operate pushes a second copy of the topmost object on the operand
+      stack. If the object is a reference to an array, string, or similar composite
+      object, only the reference is duplicated; both references will still refer
+      to the same object. </p>
+
+    <p>See also: </p>
+
+    <ul>
+      <li><a href="operators.html#exch">exch</a></li>
+
+      <li><a href="operators.html#index">index</a></li>
+
+      <li><a href="operators.html#pop">pop</a></li>
+    </ul>
+
+    <p>Errors: </p>
+
+    <ul>
+      <li><a href="errors.html#stackoverflow">stackoverflow</a>
+      </li>
+
+      <li><a href="errors.html#stackunderflow">stackunderflow</a>
+      </li>
+    </ul>
+
+    <h2 class="opdef"><a name="end">Operator: end</a></h2>
+
+    <p><b>-</b> <b>end</b> <b>-</b> </p>
+
+    <p>This operator pops the topmost dictionary off of the dictionary stack.
+      The dictionary below it becomes the new current dictionary. </p>
+
+    <p>Errors: </p>
+
+    <ul>
+      <li><a href="errors.html#dictstackunderflow">dictstackunderflow</a>
+      </li>
+    </ul>
+
+    <h2 class="opdef"><a name="exch">Operator: exch</a></h2>
+
+    <p><i>value1 value2</i> <b>exch</b> <i>value2 value1</i></p>
+
+    <p>This operator simply exchanges the top two items on the operand stack.
+      It does not matter what the operands are.</p>
+
+    <p>See also: </p>
+
+    <ul>
+      <li><a href="operators.html#dup">dup</a></li>
+
+      <li><a href="operators.html#index">index</a></li>
+
+      <li><a href="operators.html#pop">pop</a></li>
+    </ul>
+
+    <p>Errors: </p>
+
+    <ul>
+      <li><a href="errors.html#stackunderflow">stackunderflow</a></li>
+    </ul>
+
+    <h2 class="opdef"><a name="fill">Operator: fill</a></h2>
+
+    <p><b>-</b> <b>fill</b> <b>-</b> </p>
+
+    <p>This operator closes and fills the current path with the current color.
+      Any ink within the path is obliterated. Note that fill blanks out the current
+      path as if it had called <a href="operators.html#newpath">newpath</a>.
+      If you want the current path preserved, you should use <a href="operators.html#gsave">gsave</a>
+      and <a href="operators.html#grestore">grestore</a>
+      to preserve the path. </p>
+
+    <p>Errors: </p>
+
+    <ul>
+      <li><a href="errors.html#limitcheck">limitcheck</a>
+      </li>
+    </ul>
+
+    <h2 class="opdef"><a name="findfont">Operator: findfont</a></h2>
+
+    <p><i>name</i> <b>findfont</b> <i>font</i> </p>
+
+    <p>This operator looks for the named font in the font dictionary. If it
+      finds the font, it pushes the font on the stack for later processing. It
+      signals an error if the font can not be found. </p>
+
+    <p>Errors: </p>
+
+    <ul>
+      <li><a href="errors.html#invalidfont">invalidfont</a>
+      </li>
+
+      <li><a href="errors.html#stackunderflow">stackunderflow</a>
+      </li>
+
+      <li><a href="errors.html#typecheck">typecheck</a>
+      </li>
+    </ul>
+
+    <p>Also see the following operators: </p>
+
+    <ul>
+      <li><b><a href="operators.html#scalefont">scalefont</a></b>
+      </li>
+
+      <li><b><a href="operators.html#setfont">setfont</a></b>
+      </li>
+    </ul>
+
+    <h2 class="opdef"><a name="for">Operator: for</a></h2>
+
+    <p><i>initial</i> <i>increment</i> <i>limit</i> <i>proc</i> <b>for</b>
+      <b>-</b></p>
+
+    <p>This operator will execute <i>proc</i> repeatedly. The first time <i>proc</i>
+      is executed, it will be given <i>initial</i> as the top operand. Each time
+      it is executed after that, the top operand will be incremented by <i>increment</i>.
+      This process will continue until the argument would have exceeded <i>limit</i>.
+    </p>
+
+    <ul>
+      <li><a href="errors.html#stackoverflow">stackoverflow</a> </li>
+
+      <li><a href="errors.html#stackunderflow">stackunderflow</a> </li>
+
+      <li><a href="errors.html#typecheck">typecheck</a> </li>
+    </ul>
+
+    <p>See also: </p>
+
+    <ul>
+      <li><a href="operators.html#if">if</a> </li>
+
+      <li><a href="operators.html#ifelse">ifelse</a> </li>
+    </ul>
+
+    <h2 class="opdef"><a name="grestore">Operator: grestore</a></h2>
+
+    <p><b>-</b> <b>grestore</b> <b>-</b> </p>
+
+    <p>Sets the current graphics state to the topmost graphics state on graphics
+      state stack and pops that state off the stack. This operator is almost
+      always used in conjunction with <a href="operators.html#gsave">gsave</a>.</p>
+
+    <h2 class="opdef"><a name="gsave">Operator: gsave</a></h2>
+
+    <p><i>-</i> <b>gsave</b> <b>-</b> </p>
+
+    <p>This operator pushes a copy of the current graphics state onto the graphics
+      state stack. The graphics state consists of (among other things): </p>
+
+    <ul>
+      <li>Current Transformation Matrix </li>
+
+      <li>Current Path </li>
+
+      <li>Clip Path </li>
+
+      <li>Current Color </li>
+
+      <li>Current Font </li>
+
+      <li>Current Gray Value </li>
+    </ul>
+
+    <p>gsave is typically used with <a href="operators.html#grestore">grestore</a>
+      whenever you need to change the graphics state temporarily and return to
+      the original. </p>
+
+    <p>Errors: </p>
+
+    <ul>
+      <li><a href="errors.html#limitcheck">limitcheck</a>
+      </li>
+    </ul>
+
+    <h2 class="opdef"><a name="if">Operator: if</a></h2>
+
+    <p><i>bool</i> <i>proc</i> <b>if</b> <b>-</b></p>
+
+    <p>This operator will execute <i>proc</i> if <i>bool</i> is true. </p>
+
+    <ul>
+      <li><a href="errors.html#stackunderflow">stackunderflow</a> </li>
+
+      <li><a href="errors.html#typecheck">typecheck</a> </li>
+    </ul>
+
+    <h2 class="opdef"><a name="ifelse">Operator: ifelse</a></h2>
+
+    <p><i>bool</i> <i>proc1</i> <i>proc2</i> <b>ifelse</b> <b>-</b></p>
+
+    <p>This operator will execute <i>proc1</i> if <i>bool</i> is true and <i>proc2</i>
+      otherwise. </p>
+
+    <ul>
+      <li><a href="errors.html#stackunderflow">stackunderflow</a> </li>
+
+      <li><a href="errors.html#typecheck">typecheck</a> </li>
+    </ul>
+
+    <h2 class="opdef"><a name="image">Operator: image</a></h2>
+
+    <p><i>width</i> <i>height</i> <i>bpp</i> <i>data</i> <b>image</b>
+      <b>-</b></p>
+
+    <p>
+      This operator draws a grayscale image in the unit square from (0,0) to (1, 1).
+      The source information is a raster image <i>width</i> pixels wide by <i>height</i> pixels high.
+      Each pixel is represented by <i>bpp</i> bits.
+      The <i>data</i> operand can be a number of things, but is usually a procedure that returns a string of
+      bytes with the grayscale data each time it is called.
+      The procedure will be called repeatedly until all pixels have been processed.
+      The image is processed from left-to-right, top-to-bottom.
+    </p>
+
+    <ul>
+      <li><a href="errors.html#invalidaccess">invalidaccess</a> </li>
+
+      <li><a href="errors.html#ioerror">ioerror</a> </li>
+
+      <li><a href="errors.html#limitcheck">limitcheck</a> </li>
+
+      <li><a href="errors.html#rangecheck">rangecheck</a> </li>
+
+      <li><a href="errors.html#stackunderflow">stackunderflow</a> </li>
+
+      <li><a href="errors.html#typecheck">typecheck</a> </li>
+
+      <li><a href="errors.html#undefined">undefined</a> </li>
+
+      <li><a href="errors.html#undefinedresult">undefinedresult</a> </li>
+    </ul>
+
+    <p>See also: </p>
+
+    <ul>
+      <li><a href="operators.html#colorimage">colorimage</a> </li>
+    </ul>
+
+    <h2 class="opdef"><a name="index">Operator: index</a></h2>
+
+    <p><i>value_n ... value_0 n</i> <b>index</b> <i>value_n ... value_0 value_n</i></p>
+
+    <p>This operator grabs the nth item off the operand stack (item 0 is the
+      one just under the index you push on the stack for the operator) and pushes
+      it on top of the stack.</p>
+
+    <p>See also: </p>
+
+    <ul>
+      <li><a href="operators.html#dup">dup</a></li>
+
+      <li><a href="operators.html#exch">exch</a></li>
+
+      <li><a href="operators.html#pop">pop</a></li>
+    </ul>
+
+    <p>Errors: </p>
+
+    <ul>
+      <li><a href="errors.html#rangecheck">rangecheck</a></li>
+
+      <li><a href="errors.html#stackunderflow">stackunderflow</a></li>
+
+      <li><a href="errors.html#typecheck">typecheck</a></li>
+    </ul>
+
+    <h2 class="opdef"><a name="lineto">Operator: lineto</a></h2>
+
+    <p><i>x-coord</i> <i>y-coord</i> <b>lineto</b> - </p>
+
+    <p>This operator adds a line into the path. The line is from the current
+      point to the point (<i>x-coord</i> <i>y-coord</i>). After the line is added
+      to the path, the current point is set to (<i>x-coord y-coord</i>). It is
+      an error to call <b>lineto</b> without having a current point. </p>
+
+    <p>Errors: </p>
+
+    <ul>
+      <li><a href="errors.html#limitcheck">limitcheck</a>
+      </li>
+
+      <li><a href="errors.html#nocurrentpoint">nocurrentpoint</a>
+      </li>
+
+      <li><a href="errors.html#stackunderflow">stackunderflow</a>
+      </li>
+
+      <li><a href="errors.html#typecheck">typecheck</a>
+      </li>
+    </ul>
+
+    <p>Also see the following operators: </p>
+
+    <ul>
+      <li><b><a href="operators.html#rlineto">rlineto</a></b>
+      </li>
+
+      <li><b><a href="operators.html#moveto">moveto</a></b>
+      </li>
+
+      <li><b><a href="operators.html#rmoveto">rmoveto</a></b>
+      </li>
+
+      <li><b><a href="operators.html#curveto">curveto</a></b>
+      </li>
+
+      <li><b><a href="operators.html#arc">arc</a></b>
+      </li>
+
+      <li><b><a href="operators.html#closepath">closepath</a></b>
+      </li>
+    </ul>
+
+    <h2 class="opdef"><a name="moveto">Operator: moveto</a></h2>
+
+    <p><i>x-coord</i> <i>y-coord</i> <b>moveto</b> - </p>
+
+    <p>This operator moves the current point of the current path to the given
+      point in user space. If a <b>moveto</b> operator immediately follows another
+      <b>moveto</b> operator, the previous one is erased. </p>
+
+    <p>Errors: </p>
+
+    <ul>
+      <li><a href="errors.html#limitcheck">limitcheck</a>
+      </li>
+
+      <li><a href="errors.html#stackunderflow">stackunderflow</a>
+      </li>
+
+      <li><a href="errors.html#typecheck">typecheck</a>
+      </li>
+    </ul>
+
+    <p>Also see the following operators: </p>
+
+    <ul>
+      <li><b><a href="operators.html#rmoveto">rmoveto</a></b>
+      </li>
+
+      <li><b><a href="operators.html#lineto">lineto</a></b>
+      </li>
+
+      <li><b><a href="operators.html#curveto">curveto</a></b>
+      </li>
+
+      <li><b><a href="operators.html#arc">arc</a></b>
+      </li>
+
+      <li><b><a href="operators.html#closepath">closepath</a></b>
+      </li>
+    </ul>
+
+    <h2 class="opdef"><a name="mul">Operator: mul</a></h2>
+
+    <p><i>value1</i> <i>value2</i> <b>mul</b> <i>product</i> </p>
+
+    <p>This operator multiplies the first two operands on the stack and pushes
+      the result back onto the stack. The result is an integer if both operands
+      are integers and the product is not out of range. If the product is too
+      big, or one of the operands is a real, the result will be a real. </p>
+
+    <p>Errors: </p>
+
+    <ul>
+      <li><a href="errors.html#stackunderflow">stackunderflow</a>
+      </li>
+
+      <li><a href="errors.html#typecheck">typecheck</a>
+      </li>
+
+      <li><a href="errors.html#undefinedresult">undefinedresult</a>
+      </li>
+    </ul>
+
+    <h2 class="opdef"><a name="newpath">Operator: newpath</a></h2>
+
+    <p><b>-</b> <b>newpath</b> <b>-</b> </p>
+
+    <p>The newpath operator clears out the current path and prepares the system
+      to start a new current path. This operator should be called before starting
+      <i>any</i> new path, even though some operators call it implicitly.</p>
+
+      <h2 class="opdef"><a name="pop">Operator: pop</a></h2>
+
+    <p><i>value</i> <b>pop -</b></p>
+
+    <p>This operator just removes the top-most item off of the operand stack.</p>
+
+    <p>See also: </p>
+
+    <ul>
+      <li><a href="operators.html#dup">dup</a></li>
+
+      <li><a href="operators.html#exch">exch</a></li>
+
+      <li><a href="operators.html#index">index</a></li>
+    </ul>
+
+    <p>Errors: </p>
+
+    <ul>
+      <li><a href="operators.html#pop">stackunderflow</a></li>
+    </ul>
+
+    <h2 class="opdef"><a name="restore">Operator: restore</a></h2>
+
+    <p><i>state</i> <b>restore</b> - </p>
+
+    <p>This restores the total state of the PostScript system to the state
+      saved in <i>state</i>. </p>
+
+    <p>Errors: </p>
+
+    <ul>
+      <li><a href="errors.html#invalidrestore">invalidrestore</a> </li>
+
+      <li><a href="errors.html#stackunderflow">stackunderflow</a> </li>
+
+      <li><a href="errors.html#typecheck">typecheck</a> </li>
+    </ul>
+
+    <p>See also: </p>
+
+    <ul>
+      <li><a href="operators.html#save">save</a> </li>
+    </ul>
+
+    <h2 class="opdef"><a name="rlineto">Operator: rlineto</a></h2>
+
+    <p><i>dx</i> <i>dy</i> <b>rlineto</b> - </p>
+
+    <p>This operator adds a line into the path. The line is from the current
+      point to a point found by adding <i>dx</i> to the current <i>x</i> and
+      <i>dy</i> to the current <i>y</i>. After line is added to the path, the
+      current point is set to the new point. It is an error to call <b>lineto</b>
+      without having a current point. </p>
+
+    <p>Errors: </p>
+
+    <ul>
+      <li><a href="errors.html#limitcheck">limitcheck</a>
+      </li>
+
+      <li><a href="errors.html#nocurrentpoint">nocurrentpoint</a>
+      </li>
+
+      <li><a href="errors.html#stackunderflow">stackunderflow</a>
+      </li>
+
+      <li><a href="errors.html#typecheck">typecheck</a>
+      </li>
+    </ul>
+
+    <p>Also see the following operators: </p>
+
+    <ul>
+      <li><b><a href="operators.html#lineto">lineto</a></b>
+      </li>
+
+      <li><b><a href="operators.html#moveto">moveto</a></b>
+      </li>
+
+      <li><b><a href="operators.html#rmoveto">rmoveto</a></b>
+      </li>
+
+      <li><b><a href="operators.html#curveto">curveto</a></b>
+      </li>
+
+      <li><b><a href="operators.html#arc">arc</a></b>
+      </li>
+
+      <li><b><a href="operators.html#closepath">closepath</a></b>
+      </li>
+    </ul>
+
+    <h2 class="opdef"><a name="rmoveto">Operator: rmoveto</a></h2>
+
+    <p><i>dx</i> <i>dy</i> <b>rmoveto</b> - </p>
+
+    <p>This operator moves the current point of the current path by adding
+      <i>dx</i> to the current <i>x</i> and <i>dy</i> to the current <i>y</i>.
+    </p>
+
+    <p>Errors: </p>
+
+    <ul>
+      <li><a href="errors.html#limitcheck">limitcheck</a>
+      </li>
+
+      <li><a href="errors.html#stackunderflow">stackunderflow</a>
+      </li>
+
+      <li><a href="errors.html#typecheck">typecheck</a>
+      </li>
+    </ul>
+
+    <p>Also see the following operators: </p>
+
+    <ul>
+      <li><b><a href="operators.html#moveto">moveto</a></b>
+      </li>
+
+      <li><b><a href="operators.html#lineto">lineto</a></b>
+      </li>
+
+      <li><b><a href="operators.html#curveto">curveto</a></b>
+      </li>
+
+      <li><b><a href="operators.html#arc">arc</a></b>
+      </li>
+
+      <li><b><a href="operators.html#closepath">closepath</a></b>
+      </li>
+    </ul>
+
+    <h2 class="opdef"><a name="rotate">Operator: rotate</a></h2>
+
+    <p><i>angle</i> <b>rotate</b> <b>-</b></p>
+
+    <p>This operator has the effect of rotating the user space counter-clockwise
+      by <i>angle</i> degrees (negative angles rotate clockwise). The rotation
+      occurs around the current origin. </p>
+
+    <ul>
+      <li><a href="errors.html#rangecheck">rangecheck</a> </li>
+
+      <li><a href="errors.html#stackunderflow">stackunderflow</a> </li>
+
+      <li><a href="errors.html#typecheck">typecheck</a> </li>
+    </ul>
+
+    <p>See also: </p>
+
+    <ul>
+      <li><a href="operators.html#scale">scale</a> </li>
+
+      <li><a href="operators.html#translate">translate</a> </li>
+    </ul>
+
+    <h2 class="opdef"><a name="save">Operator: save</a></h2>
+
+    <p>- <b>save</b> <i>state</i> </p>
+
+    <p>This operator gathers up the complete state of the PostScript system
+      and saves it in <i>state</i>. Errors: </p>
+
+    <ul>
+      <li><a href="errors.html#limitcheck">limitcheck</a> </li>
+
+      <li><a href="errors.html#stackoverflow">stackoverflow</a> </li>
+    </ul>
+
+    <p>See Also: </p>
+
+    <ul>
+      <li><a href="operators.html#restore">restore</a> </li>
+    </ul>
+
+    <h2 class="opdef"><a name="scale">Operator: scale</a></h2>
+
+    <p><i>sx</i> <i>sy</i> <b>scale</b> <b>-</b></p>
+
+    <p>This operator has the effect of scaling the user coordinates. All coordinates
+      will be multiplied by <i>sx</i> in the horizontal direction, and <i>sy</i>
+      in the vertical.</p>
+
+    <p>The origin will not be affected by this operation.</p>
+
+    <ul>
+      <li><a href="errors.html#rangecheck">rangecheck</a> </li>
+
+      <li><a href="errors.html#stackunderflow">stackunderflow</a> </li>
+
+      <li><a href="errors.html#typecheck">typecheck</a> </li>
+    </ul>
+
+    <p>See also: </p>
+
+    <ul>
+      <li><a href="operators.html#rotate">rotate</a> </li>
+
+      <li><a href="operators.html#translate">translate</a> </li>
+    </ul>
+
+    <h2 class="opdef"><a name="scalefont">Operator: scalefont</a></h2>
+
+    <p><i>font</i> <i>size</i> <b>scalefont</b> <i>font</i> </p>
+
+    <p>This operator takes the given font and scales it by the given scale
+      factor. The resulting scaled font is pushed onto the stack. A <i>size</i>
+      of one produces the same sized characters as the original font, 0.5 produces
+      half-size characters, and so on. </p>
+
+    <p>Errors: </p>
+
+    <ul>
+      <li><a href="errors.html#invalidfont">invalidfont</a>
+      </li>
+
+      <li><a href="errors.html#stackunderflow">stackunderflow</a>
+      </li>
+
+      <li><a href="errors.html#typecheck">typecheck</a>
+      </li>
+
+      <li><a href="errors.html#undefined">undefined</a>
+      </li>
+    </ul>
+
+    <p>Also see the following operators: </p>
+
+    <ul>
+      <li><b><a href="operators.html#findfont">findfont</a></b>
+      </li>
+
+      <li><b><a href="operators.html#setfont">setfont</a></b>
+      </li>
+    </ul>
+
+    <h2 class="opdef"><a name="setfont">Operator: setfont</a></h2>
+
+    <p><i>font</i> <b>setfont</b> - </p>
+
+    <p>This operator sets the current font to be <i>font</i>. This font can
+      be the result of any font creation or modification operator. This font
+      is used in all subsequent character operations like <a href="operators.html#show">show</a>.
+    </p>
+
+    <ul>
+      <li><a href="errors.html#invalidfont">invalidfont</a>
+      </li>
+
+      <li><a href="errors.html#stackunderflow">stackunderflow</a>
+      </li>
+
+      <li><a href="errors.html#typecheck">typecheck</a>
+      </li>
+    </ul>
+
+    <p>Also see: </p>
+
+    <ul>
+      <li><a href="operators.html#findfont">findfont</a>
+      </li>
+
+      <li><a href="operators.html#scalefont">scalefont</a>
+      </li>
+    </ul>
+
+   <h2 class="opdef"><a name="setcymkcolor">Operator: setcymkcolor</a></h2>
+
+    <p><i>cyan</i> <i>magenta</i> <i>yellow</i> <i>black</i> <b>setcymkcolor</b> <b>-</b></p>
+
+    <p>Sets the color of the ink to the color in
+      the <acronym>CYMK</acronym> color space specified
+      by <i>cyan</i>, <i>magenta</i>, <i>yellow</i>,
+      and <i>black</i>. The components must be between 0 (none) to 1
+      (full).</p>
+
+    <ul>
+      <li><a href="errors.html#stackunderflow">stackunderflow</a></li>
+      <li><a href="errors.html#typecheck">typecheck</a></li>
+      <li><a href="errors.html#undefined">undefined</a></li>
+    </ul>
+
+    <p>See also:</p>
+    <ul>
+      <li><a href="#setgray">setgray</a></li>
+      <li><a href="#setrgbcolor">setrgbcolor</a></li>
+    </ul>
+
+    <h2 class="opdef"><a name="setgray">Operator: setgray</a></h2>
+
+    <p><i>gray-value</i> <b>setgray</b> - This operator sets the current intensity
+      of the ink to <i>gray-value</i>. <i>gray-value</i> must be a number from
+      0 (black) to 1 (white). This will affect all markings stroked or filled
+      onto the page. This applies even to path components created before the
+      call to <b>setgray</b> as long as they have not yet been stroked. </p>
+
+    <ul>
+      <li><a href="errors.html#stackunderflow">stackunderflow</a>
+      </li>
+
+      <li><a href="errors.html#typecheck">typecheck</a>
+      </li>
+
+      <li><a href="errors.html#undefined">undefined</a>
+      </li>
+    </ul>
+
+    <p>See also:</p>
+    <ul>
+      <li><a href="#setcymkcolor">setcymkcolor</a></li>
+      <li><a href="#setrgbcolor">setrgbcolor</a></li>
+    </ul>
+
+    <h2 class="opdef"><a name="setlinewidth">Operator: setlinewidth</a></h2>
+
+    <p><i>width</i> <b>setlinewidth</b> - This operator sets the width of all
+      lines to be stroked to <i>width</i>, which must be specified in points.
+      A line width of zero is possible and is interpreted to be a hairline, as
+      thin as can be rendered on the given device. </p>
+
+    <ul>
+      <li><a href="errors.html#stackunderflow">stackunderflow</a>
+      </li>
+
+      <li><a href="errors.html#typecheck">typecheck</a>
+      </li>
+    </ul>
+
+    <h2 class="opdef"><a name="setrgbcolor">Operator: setrgbcolor</a></h2>
+
+    <p><i>red</i> <i>green</i> <i>blue</i> <b>setrgbcolor</b> <b>-</b></p>
+
+    <p>Sets the color of the ink to the color in
+    the <acronym>RGB</acronym> color space specified
+    by <i>red</i>, <i>green</i>, and <i>blue</i>. The components must
+    be between 0 (none) to 1 (full).</p>
+
+    <ul>
+      <li><a href="errors.html#stackunderflow">stackunderflow</a></li>
+      <li><a href="errors.html#typecheck">typecheck</a></li>
+      <li><a href="errors.html#undefined">undefined</a></li>
+    </ul>
+
+    <p>See also:</p>
+    <ul>
+      <li><a href="#setcymkcolor">setcymkcolor</a></li>
+      <li><a href="#setgray">setgray</a></li>
+    </ul>
+
+    <h2 class="opdef"><a name="show">Operator: show</a></h2>
+
+    <p><i>string</i> <b>show</b> <b>-</b></p>
+
+    <p>This operator draws the given string onto the page. The current graphics
+      state applies, so the current font, fontsize, gray value, and <a href="graphics.html#ctm">current
+	transformation matrix</a> all apply.</p>
+
+    <p>The location for the text is set by the current point. The current point
+      will specify the leftmost point of the baseline for the text.</p>
+
+    <ul>
+      <li><a href="errors.html#invalidaccess">invalidaccess</a> </li>
+
+      <li><a href="errors.html#invalidfont">invalidfont</a> </li>
+
+      <li><a href="errors.html#nocurrentpoint">nocurrentpoint</a> </li>
+
+      <li><a href="errors.html#rangecheck">rangecheck</a> </li>
+
+      <li><a href="errors.html#stackunderflow">stackunderflow</a> </li>
+
+      <li><a href="errors.html#typecheck">typecheck</a> </li>
+    </ul>
+
+    <p>See also: </p>
+
+    <ul>
+      <li><a href="operators.html#charpath">charpath</a> </li>
+
+      <li><a href="operators.html#moveto">moveto</a> </li>
+
+      <li><a href="operators.html#setfont">setfont</a> </li>
+    </ul>
+
+    <h2 class="opdef"><a name="showpage">Operator: showpage</a></h2>
+
+    <p>- <b>showpage</b> - </p>
+
+    <p>This operator commits the current page to print and ejects the page
+      from printing device. <b>showpage</b> also prepares a new blank page. </p>
+
+
+    <h2 class="opdef"><a name="stroke">Operator: stroke</a></h2>
+
+    <p><b>-</b> <b>stroke</b> <b>-</b> </p>
+
+    <p>This operator draws a line along the current path using the current
+      settings. This includes the current line thickness, current pen color,
+      current dash pattern, current settings for how lines should be joined,
+      and what kind of caps they should have. These settings are the settings
+      at the time the stroke operator is invoked.</p>
+
+    <p>A closed path consisting of two or more points at the same location
+      is a degenerate path. A degenerate path will be drawn only if you have
+      set the line caps to round caps. If your line caps are not round caps,
+      or if the path is not closed, the path will not be drawn. If the path is
+      drawn, it will appear as a filled circle center at the point. </p>
+
+    <p>Errors: </p>
+
+    <ul>
+      <li><a href="errors.html#limitcheck">limitcheck</a>
+      </li>
+    </ul>
+
+    <h2 class="opdef"><a name="sub">Operator: sub</a></h2>
+
+    <p><i>num1</i> <i>num2</i> <b>sub</b> <i>num3</i></p>
+
+    <p>This operator returns the result of subtracting <i>num2</i> from <i>num1</i>.</p>
+
+    <ul>
+      <li><a href="errors.html#stackunderflow">stackunderflow</a> </li>
+
+      <li><a href="errors.html#typecheck">typecheck</a> </li>
+
+      <li><a href="errors.html#undefinedresult">undefinedresult</a> </li>
+    </ul>
+
+    <p>See also: </p>
+
+    <ul>
+      <li><a href="operators.html#add">add</a> </li>
+
+      <li><a href="operators.html#div">div</a> </li>
+
+      <li><a href="operators.html#mul">mul</a> </li>
+    </ul>
+
+    <h2 class="opdef"><a name="translate">Operator: translate</a></h2>
+
+    <p><i>x-coord</i> <i>y-coord</i> <b>translate</b> <b>-</b></p>
+
+    <p>This operator has the affect of moving the origin to the point (<i>x-coord</i>,
+      <i>y-coord</i>) in the current user space.</p>
+
+    <ul>
+      <li><a href="errors.html#rangecheck">rangecheck</a> </li>
+
+      <li><a href="errors.html#stackunderflow">stackunderflow</a> </li>
+
+      <li><a href="errors.html#typecheck">typecheck</a> </li>
+    </ul>
+
+    <p>See also: </p>
+
+    <ul>
+      <li><a href="operators.html#rotate">rotate</a> </li>
+
+      <li><a href="operators.html#scale">scale</a> </li>
+    </ul>
+
+    <h2 class="opindex"><a name="opindex">Index of Operators</a></h2>
+
+    <ul>
+      <li><a href="operators.html#add">add</a> </li>
+
+      <li><a href="operators.html#arc">arc</a> </li>
+
+      <li><a href="operators.html#begin">begin</a> </li>
+
+      <li><a href="operators.html#bind">bind</a> </li>
+
+      <li><a href="operators.html#clip">clip</a> </li>
+
+      <li><a href="operators.html#charpath">charpath</a> </li>
+
+      <li><a href="operators.html#closepath">closepath</a> </li>
+
+      <li><a href="operators.html#curveto">curveto</a> </li>
+
+      <li><a href="operators.html#def">def</a> </li>
+
+      <li><a href="operators.html#div">div</a> </li>
+
+      <li><a href="operators.html#dup">dup</a> </li>
+
+      <li><a href="operators.html#end">end</a> </li>
+
+      <li><a href="operators.html#exch">exch</a> </li>
+
+      <li><a href="operators.html#fill">fill</a> </li>
+
+      <li><a href="operators.html#for">for</a> </li>
+
+      <li><a href="operators.html#findfont">findfont</a> </li>
+
+      <li><a href="operators.html#grestore">grestore</a> </li>
+
+      <li><a href="operators.html#gsave">gsave</a> </li>
+
+      <li><a href="operators.html#if">if</a> </li>
+
+      <li><a href="operators.html#ifelse">ifelse</a> </li>
+
+      <li><a href="operators.html#index">index</a> </li>
+
+      <li><a href="operators.html#lineto">lineto</a> </li>
+
+      <li><a href="operators.html#moveto">moveto</a> </li>
+
+      <li><a href="operators.html#mul">mul</a> </li>
+
+      <li><a href="operators.html#newpath">newpath</a> </li>
+
+      <li><a href="operators.html#pop">pop</a> </li>
+
+      <li><a href="operators.html#restore">restore</a> </li>
+
+      <li><a href="operators.html#rlineto">rlineto</a> </li>
+
+      <li><a href="operators.html#rmoveto">rmoveto</a> </li>
+
+      <li><a href="operators.html#rotate">rotate</a> </li>
+
+      <li><a href="operators.html#save">save</a> </li>
+
+      <li><a href="operators.html#scale">scale</a> </li>
+
+      <li><a href="operators.html#scalefont">scalefont</a> </li>
+
+      <li><a href="operators.html#setfont">setfont</a> </li>
+
+      <li><a href="operators.html#setgray">setgray</a> </li>
+
+      <li><a href="operators.html#setlinewidth">setlinewidth</a> </li>
+
+      <li><a href="operators.html#show">show</a> </li>
+
+      <li><a href="operators.html#showpage">showpage</a> </li>
+
+      <li><a href="operators.html#stroke">stroke</a> </li>
+
+      <li><a href="operators.html#sub">sub</a> </li>
+
+      <li><a href="operators.html#translate">translate</a> </li>
+    </ul>
+
+    <div class="navbar">
+      <a href="postscript.html">Main Page</a>
+    </div>
+  </body>
+</html>

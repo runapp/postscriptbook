@@ -1,0 +1,140 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <title>Clipping for Effect</title>
+    <link rel="stylesheet" type="text/css" href="postscript.css" />
+  </head>
+  <body>
+    <h1><a name="clipforeffect">Clipping for Effect</a></h1>
+
+    <div class="navbar">
+      <a href="transforms.html">Previous Page</a>
+      &bull;
+      <a href="postscript.html">Main Page</a>
+      &bull;
+      <a href="image.html">Next Page</a>
+    </div>
+
+    <p>Within the graphics state of a PostScript system is a special path
+      called the clipping path. Every bit of ink to be placed on the page is
+      checked against this path. If PostScript determines that the ink would
+      go outside the current clipping path, that portion of ink is ignored. If
+      the ink would be within the clipping path, it is actually placed on the
+      page. For the mathematically inclined, the clipping process is intersection:
+      the set of pixels to be painted is intersected with the set of pixels within
+      the current clipping path to get the set of pixels to paint. For objects
+      that are partly inside and partly outside the clipping path, the natural
+      implication is that only the part that is within the clipping path is drawn.</p>
+
+    <p>By default, the clipping path is defined to be a rectangle just within
+      the boundary of the page (usually it is set to about a quarter of an inch).
+      You can set your own clip path by constructing the path with the normal
+      path construction operators and invoking the <a href="operators.html#clip">clip</a>
+      operator. There is only one difficulty: once you reduce the size of the
+      current clipping path, there is no way to expand the size of the clipping
+      path with clip. The only way to go back to a larger clipping path is to
+      save the one you would like to restore with <a href="operators.html#gsave">gsave</a>
+      and restore it later with <a href="operators.html#grestore">grestore</a>.
+      In fact, it is always good policy to only set a clipping path withing a
+      bracketing gsave/grestore pair. You will always be safe if you do this.</p>
+
+    <h2><a name="clippingpath">Clipping a Simple Path</a></h2>
+
+    <p>As a simple <a href="examples/newsprint.html">example</a> of
+      clipping, let us say that we want to draw a box and fill it with text in
+      such a way that some text is cut off. The effect we are wanting is that
+      of a hole in a piece of paper over some newsprint, say. This can be done
+      quite simply.</p>
+
+    <p>First, we set up the box to act as our window. We can set up the path,
+      stroke it if we want to see it, and then clip to it:</p>
+
+<pre>
+        gsave                      % Save the old clip path
+          72 72 box                % Set up our box
+          gsave                    % Don't allow box to be lost after stroke
+            stroke
+          grestore                 % Restore the box path
+          clip                     % Clip to the box
+</pre>
+
+    <p>The clip path is now established, and we can now go on to draw the text
+      that should be clipped (note that there is a leading gsave... this is to
+      keep us from loosing our old clip path which covered the whole page).</p>
+
+<pre>
+          60 60 moveto
+          (This is Times-Roman clipped to a box) show
+          70 90 moveto
+          (This is Times-Roman clipped to a box) show
+          50 120 moveto
+          (This is Times-Roman clipped to a box) show
+</pre>
+
+    <p>Once we have finished, we can just do a grestore to clean up after ourselves.</p>
+
+    <p>While there are some implementation limitations on the complexity of
+      the clip path, in general you can have very complex paths... not just squares.
+      Arcs, lines, even text can be used to create the clip path.</p>
+
+    <h2><a name="textclip">Clipping to Text</a></h2>
+
+    <p>There may come a time when you will want to do some special effects
+      with text. For example, you might want to print out &ldquo;July 4&rdquo;
+      using letters that look like the flag. This is fairly easy to do using
+      clipping. A somewhat simpler problem would be to draw text that looks like
+      a sunburst (that is, the text is filled with a sunburst pattern). This
+      is also fairly easy to do once you know how to clip to text. The secret
+      is an operator called <a href="operators.html#charpath">charpath</a>.
+      This operator takes a string and a Boolean and builds the path at the current
+      point that would trace out the text of the string. The path, once created,
+      can be stroked, filled, clipped, or any other combination of things; it
+      is, after all, just a path. The Boolean which charpath requires is for
+      handling special kinds of fonts, and it is generally left true.</p>
+
+    <p>As before, the steps to this <a href="examples/cliptext.html">example</a>
+      are to build the path, clip to it, and draw the image needing to be clipped.</p>
+
+    <p>Here we build the path by setting up our current point and string, and
+      then invoking charpath:</p>
+
+<pre>
+      gsave                                      % Save old clip path
+        /Times-Roman findfont 60 scalefont setfont
+        72 72 moveto (Clipping) true charpath    % Set up the text's path
+</pre>
+
+    <p>Once we have the path, we can invoke clip to establish the complex path
+      of the text as the current clip path. With the clip path established, we
+      can draw our sunburst, which will be confined to the area inside the text:</p>
+
+<pre>
+  174 72 translate                        % Set our origin to middle
+  0 2 360 {                               % For every second degree of circle
+    newpath
+    gsave
+      rotate                              % Rotate to angle
+      0 0 moveto                          % From new origin
+      300 0 rlineto                       % Setup a 300 point long line
+      stroke                              % ... and draw it
+    grestore
+  } for
+</pre>
+
+    <p>Again, because of our judicious use of gsave and grestore, a simple
+      grestore cleans up the graphics state when we're done.</p>
+
+<pre>grestore</pre>
+
+    <p>As you might imagine, this sort of effect is very powerful and can make
+      it very easy for you to create some stunning images.</p>
+
+    <div class="navbar">
+      <a href="transforms.html">Previous Page</a>
+      &bull;
+      <a href="postscript.html">Main Page</a>
+      &bull;
+      <a href="image.html">Next Page</a>
+    </div>
+  </body>
+</html>

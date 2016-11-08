@@ -1,0 +1,90 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <title>Draft</title>
+    <link rel="stylesheet" type="text/css" href="postscript.css" />
+  </head>
+  <body>
+    <h1><a name="draft">Draft</a></h1>
+
+    <div class="navbar">
+      <a href="nup.html">Previous Page</a>
+      &bull;
+      <a href="postscript.html">Main Page</a>
+    </div>
+
+    <p>There are times when you will need to stamp a document as a draft.
+      That is, you will want to mark the document so that no one can mistake
+      it for a finished document, but you do not want to make it illegible. Watermarks
+      are perfect for this task.</p>
+
+    <p>A watermark is any marking which appears <em>behind</em> the text of the
+      page and is generally quite light in appearance. The main text of the
+      page should be legible above it, and the watermark should be visible beneath.</p>
+
+    <h2><a name="postscript">The PostScript</a></h2>
+
+    <p>The PostScript for generating a watermark is quite simple. After each
+      <b>%%Page:</b> comment (and before the actual PostScript code for the page,
+      you should insert the code to draw the watermark (safely wrapped between
+      a <a href="operators.html#gsave">gsave</a> and <a href="operators.html#grestore">grestore</a>
+      pair.</p>
+
+    <p>As a concrete example, let us say we want to print the word &ldquo;Draft&rdquo;
+      down the page beneath the actual text of the page. Such a watermark would
+      be suitable for printing drafts of documents.</p>
+
+    <p>Here is the PostScript code to print the watermark: </p>
+
+<pre>
+gsave
+ .75 setgray
+ /Helvetica-Bold findfont 72 scalefont setfont
+ 80 80 800 {
+  306 exch moveto                      % move to the center of the line
+  (Draft) dup
+  stringwidth pop 2 div neg 0 rmoveto  % Center the text horizontally
+  show                                 % Show the text
+ } for                                 % and keep doing it
+grestore
+</pre>
+
+    <h2><a name="hard">The Hard Part</a></h2>
+
+    <p>The hard part of the job is to find the pages. Fortunately, we can use
+      the same technique we used for the <a href="galley.html#hard">galley proofs</a>.
+      Actually, our requirements are simpler. We do not need to wrap the original
+      page code in a gsave, grestore pair, as we did before.</p>
+
+    <p>And here is the <acronym>PERL</acronym> script to do the job:</p>
+
+<pre>
+#!/usr/local/bin/perl
+$flag = 0;
+while (&lt;&gt;) {
+    if (/^%%Page:/) {
+        if ($flag) {
+            print &quot;grestore\n&quot;;
+        }
+        $flag = 1;
+        print $_;
+        print &quot;gsave\n&quot;;
+        print &quot;.75 setgray\n&quot;;
+        print &quot;/Helvetica-Bold findfont 72 scalefont setfont\n&quot;;
+        print &quot;80 80 800 { 306 exch moveto\n&quot;;
+        print &quot;(Draft) dup\n&quot;;
+        print &quot;stringwidth pop 2 div neg 0 rmoveto show } for\n&quot;;
+        print &quot;grestore\n&quot;;
+    } else {
+        print;
+    }
+}
+</pre>
+
+    <div class="navbar">
+      <a href="nup.html">Previous Page</a>
+      &bull;
+      <a href="postscript.html">Main Page</a>
+    </div>
+  </body>
+</html>

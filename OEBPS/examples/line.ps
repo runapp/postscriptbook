@@ -1,0 +1,15 @@
+%!
+%% Example of simple line drawing
+
+/inch {72 mul} def	% Define an inch->point conversion function
+
+newpath			% Start a new path
+
+1 inch 1 inch moveto	% Set the current point an inch in and up
+
+2 inch 1 inch lineto	% Create an inch long line segment to the right
+
+stroke			% Draw the line
+
+showpage		% Paint and eject the page
+

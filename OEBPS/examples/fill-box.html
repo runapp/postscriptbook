@@ -1,0 +1,36 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <title>Filled Box Example</title>
+    <link rel="stylesheet" type="text/css" href="../postscript.css" />
+  </head>
+  <body>
+    <h1>Filled Box Example</h1>
+
+    <div class="navbar">
+      <a href="../examples.html">Example Index</a>
+    </div>
+
+    <p><a href="fill-box.ps">Try it.</a></p>
+
+<PRE>
+%!
+%% Draws a one square inch box and inch in from the bottom left
+
+/inch {72 mul} def      % Convert inches-&gt;points (1/72 inch)
+
+newpath                 % Start a new path
+1 inch 1 inch moveto    % an inch in from the lower left
+2 inch 1 inch lineto    % bottom side
+2 inch 2 inch lineto    % right side
+1 inch 2 inch lineto    % top side
+closepath               % Automatically add left side to close path
+fill                    % Fill in the box on the paper
+showpage                % We're done... eject the page
+</PRE>
+
+    <div class="navbar">
+      <a href="../examples.html">Example Index</a>
+    </div>
+  </body>
+</html>

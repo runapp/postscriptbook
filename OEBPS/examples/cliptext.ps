@@ -1,0 +1,23 @@
+%!
+
+gsave                                     % Save old clip path
+  /Times-Roman findfont 60 scalefont setfont
+
+  72 72 moveto (Clipping) true charpath   % Set up the text's path
+  clip                                    % Clip to it
+
+  174 72 translate                        % Set our origin to middle
+  0 2 360 {                               % For every second degree of circle
+    newpath
+
+    gsave
+      rotate                              % Rotate to angle
+      0 0 moveto                          % From new origin
+      300 0 rlineto                       % Setup a 300 point long line
+      stroke                              % ... and draw it
+    grestore
+  } for
+
+grestore                                  % Restore old clip path
+
+showpage

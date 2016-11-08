@@ -1,0 +1,37 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <title>Drawing a Box with rlineto</title>
+    <link rel="stylesheet" type="text/css" href="../postscript.css" />
+  </head>
+  <body>
+    <h1>Drawing a Box with rlineto</h1>
+
+    <div class="navbar">
+      <a href="../examples.html">Example Index</a>
+    </div>
+
+    <p><a href="box2.ps">Try it.</a></p>
+
+<pre>
+%!
+%% Draws a one square inch box and inch in from the bottom left
+%% This example uses relative coordinates on the lines
+
+/inch {72 mul} def      % Convert inches-&gt;points (1/72 inch)
+
+newpath                 % Start a new path
+1 inch 1 inch moveto    % an inch in from the lower left
+1 inch 0 inch rlineto   % bottom side
+0 inch 1 inch rlineto   % right side
+-1 inch 0 inch rlineto  % top side
+closepath               % Automatically add left side to close path
+stroke                  % Draw the box on the paper
+showpage                % We're done... eject the page
+</pre>
+
+    <div class="navbar">
+      <a href="../examples.html">Example Index</a>
+    </div>
+  </body>
+</html>

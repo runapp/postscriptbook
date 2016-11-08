@@ -1,0 +1,53 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <title>Clipping Text to a Box</title>
+    <link rel="stylesheet" type="text/css" href="../postscript.css" />
+  </head>
+  <body>
+    <h1>Clipping Text to a Box</h1>
+
+    <div class="navbar">
+      <a href="../examples.html">Example Index</a>
+    </div>
+
+    <p><a href="newsprint.ps">Try it.</a></p>
+
+<PRE>
+%!
+% operator box: xcoord ycoord box -
+% Creates one inch box at xcoord, ycoord
+/box {
+   newpath
+   moveto
+   72 0 rlineto
+   0 72 rlineto
+   -72 0 rlineto
+   closepath
+} def
+
+/Times-Roman findfont 30 scalefont setfont
+
+gsave                      % Save the old clip path
+  72 72 box                % Set up our box
+  gsave                    % Don't allow box to be lost after stroke
+    stroke
+  grestore                 % Restore the box path
+  clip                     % Clip to the box
+
+  60 60 moveto
+  (This is Times-Roman clipped to a box) show
+  70 90 moveto
+  (This is Times-Roman clipped to a box) show
+  50 120 moveto
+  (This is Times-Roman clipped to a box) show
+
+grestore                   % Get the clip path back
+
+showpage
+</PRE>
+    <div class="navbar">
+      <a href="../examples.html">Example Index</a>
+    </div>
+  </body>
+</html>

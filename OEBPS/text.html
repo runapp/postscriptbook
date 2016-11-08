@@ -1,0 +1,115 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <title>Putting Text on the Page</title>
+    <link rel="stylesheet" type="text/css" href="postscript.css" />
+  </head>
+  <body>
+    <h1><a name="text">Putting Text on the Page</a></h1>
+
+    <div class="navbar">
+      <a href="drawing.html">Previous Page</a>
+      &bull;
+      <a href="postscript.html">Main Page</a>
+      &bull;
+      <a href="color.html">Next Page</a>
+    </div>
+
+    <p>Printing text on a page is, understandably, a simple process. It consists
+      basically of these main steps:</p>
+
+    <ul>
+      <li>Set up a font to use </li>
+
+      <li>Set the current point to where the lower left corner of the text will be </li>
+
+      <li>Give the string to print to the <a href="operators.html#show">show</a> operator</li>
+    </ul>
+
+    <p>The show operator is the basic operator for printing strings of text.
+      It takes a string and prints it out in the current font and with the lower
+      left corner at the current point. After the text has been printed, the
+      current point is at the lower right of the string.</p>
+
+    <h2><a name="fonts">Fonts</a></h2>
+
+    <p>Fonts in PostScript are actually <a href="language.html#dictionary">dictionaries</a>.
+      A font dictionary contains several operators. Most of these operators simply
+      set up the path for a single character in the font. When PostScript needs
+      to typeset an &ldquo;A&rdquo; in the current font, it finds the operator specified
+      in the font for &ldquo;A&rdquo; and invokes it. This operator goes about the business
+      of drawing the letter. This means that there is no fundamental difference
+      between letters and any other kind of ink on the page: text <em>is</em> graphics.
+      Furthermore, since a font is essentially just a program to draw things,
+      the current graphics state applies to text just as much as it applies to
+      lines and curves which your program draws. This is one of the most powerful
+      features of PostScript, as we will see later.</p>
+
+    <p>The fonts themselves are stored in a special dictionary of fonts, and
+      they are named. If you want to retrieve a font by name, you need to use
+      the <a href="operators.html#findfont">findfont</a> operator. findfont
+      retrieves the font from the dictionary (if it is there) and leaves the
+      font on the stack. You can then specify how big the font should be and
+      make it the current font. The basic process for setting the font is:</p>
+
+    <ul>
+      <li>Retrieve the font from the dictionary with findfont,</li>
+
+      <li>Set the size of the font with <a href="operators.html#scalefont">scalefont</a>,</li>
+
+      <li>Make this new font the current font with <a href="operators.html#setfont">setfont</a></li>
+    </ul>
+
+    <p>scalefont takes two arguments, the lower argument on the stack is a
+      font dictionary while the second is the size of the new font in points.
+      scalefont returns a new font dictionary which is the same as the old one
+      but scaled to the given size. setfont, on the other hand, takes a font
+      dictionary and makes it the current font.</p>
+
+    <p>For example, let us say that we want to start typesetting in Times Roman,
+      and we want it to be set to 20 points. The following code would set up
+      the correct font:</p>
+
+<pre>
+/Times-Roman findfont   % Get the basic font
+20 scalefont            % Scale the font to 20 points
+setfont                 % Make it the current font
+</pre>
+
+    <p>Since the font &ldquo;Times-Roman&rdquo; is stored in a dictionary, we
+      search for it using its PostScript <a href="language.html#name">name</a>.
+      Your printer will usually come with a set of built in fonts and will almost
+      always allow you to add more. The names of the fonts available will vary
+      from printer to printer, but Times is almost always present. Fonts typically
+      come in families. &ldquo;Times&rdquo; is the name of the family we used here,
+      and it has four member fonts: Times-Roman, Times-Italic, Time-Bold, and
+      Times-BoldItalic.</p>
+    
+    <h2><a name="show">Showing Text</a></h2>
+    
+    <p>The <a href="operators.html#show">show</a> operator is used
+      to typeset text on the page. It takes a single argument: a string containing
+      the text to be typeset. Text can be considered to be part of the path,
+      so you must also have set the current point with call to moveto or an equivalent
+      operator. A typical call to show might look like this:</p>
+
+<pre>
+        newpath                 % Start a new path
+        72 72 moveto            % Lower left corner of text at (72, 72)
+        (Hello, world!) show    % Typeset &quot;Hello, world!&quot;
+</pre>
+
+    <p>If we ran this code right after the font selection code above, we would
+      get the string &ldquo;Hello, world!&rdquo; printed an inch in from the lower
+      left corner, and it would be printed in 20 point Times-Roman. You can actually
+      try this <a href="examples/hello-text.html">example</a>.</p>
+
+    <div class="navbar">
+      <a href="drawing.html">Previous Page</a>
+      &bull;
+      <a href="postscript.html">Main Page</a>
+      &bull;
+      <a href="color.html">Next Page</a>
+    </div>
+  </body>
+</html>

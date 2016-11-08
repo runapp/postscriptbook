@@ -1,0 +1,166 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <title>Two Up</title>
+    <link rel="stylesheet" type="text/css" href="postscript.css" />
+  </head>
+  <body>
+    <h1><a name="2up">Two Up</a></h1>
+
+    <div class="navbar">
+      <a href="galley.html">Previous Page</a>
+      &bull;
+      <a href="postscript.html">Main Page</a>
+      &bull;
+      <a href="draft.html">Next Page</a>
+    </div>
+
+    <p>There are occasions when you might want to print more than one page
+      of a PostScript document on a piece of paper. For example, you may have
+      a collection of slides for a presentation, and you may want to print them
+      out in condensed form for a kind of digest hand-out. This kind of printing,
+      where two pages are printed side-by-side on a piece of paper is called
+      &ldquo;two-up,&rdquo; for the two pages facing up. This idea generalizes
+      readily to any number of pages (though, of course, legibility goes down
+      quickly as the number of pages goes up). In its general form, it is called
+      &ldquo;n-up.&rdquo;</p>
+
+    <h2><a name="postscript">The PostScript</a></h2>
+
+    <p>What is necessary to print in two-up mode? First, we need
+      to translate and rotate each page into the right location of the page,
+      then we need to make sure that the page fits in the new area reserved for
+      it (we will need to scale it down to about half its original size). If
+      we place the two pages side by side, we will get proper two-up form.</p>
+
+    <p>The code I will present here will place the odd pages on the left (as
+      you&rsquo;re looking at the page in landscape orientation) and the even pages on
+      the right. You could do it the other way around, if that makes more sense
+      to you.</p>
+
+    <p>Here is the code we must wrap around the odd pages:</p>
+
+<pre>
+        gsave
+         504 30 translate  % Position page in middle of region
+         90 rotate         % Aim it in the right direction
+         .5 .5 scale       % make it small enough
+         % original page code here...
+        grestore
+</pre>
+
+    <p>And here is the code for the even pages:</p>
+
+<pre>
+        gsave
+         504 426 translate % Position page in middle of region
+         90 rotate         % Aim it in the right direction
+         .5 .5 scale       % make it small enough
+         % original page code here...
+        grestore
+</pre>
+
+    <p>Now, you will notice that I used some curious numbers in the <a href="operators.html#translate">translate</a>
+      command. The reason I chose these particular numbers was that I wanted
+      to center each page in its half of the page. I knew I was going to scale
+      by 0.5, so I computed how much white-space was left and added in the appropriate
+      fudge-factor to center the pages.</p>
+    
+    <p>You may also notice that I wrap a <a href="opeators.html#gsave">gsave</a>
+      and a <a href="operators.html#grestore">grestore</a> around the page and
+      the additional code? The reason for this is that each page <em>must</em>
+      leave the state of the printer unchanged when it has been printed. If you
+      permanently change the state, that state change will be in affect for all
+      subsequent pages. By following this rule, you make the pages independent
+      of order. Some print servers must shuffle page order in order to print
+      the document correctly; since my pages are independent (at least as far
+      as my code is concerned), they will print correctly.</p>
+
+    <h2><a name="hard">The Hard Part</a></h2>
+    
+    <p>Now comes the hard part of recognizing where the pages begin. The technique
+      is essentially the same as what we used for <a href="galley.html#hard">galley
+	proofs</a>, so I will spare you the logic here. Essentially, we will look
+      for <b>%%Page:</b> comments. We will, however, need to keep track of whether
+      the current page is an odd page or an even page and insert the correct
+      translation code. Also, as before, we must be careful about inserting grestores
+      before subsequent pages and before the <b>%%Trailer</b> or <b>%%EOF</b>
+      comments.</p>
+
+    <p>Here is the <acronym>PERL</acronym> script to do the job:</p>
+
+<pre>
+#!/usr/local/bin/perl
+$flag = 0;                      # We have not yet found a page
+$even = 0;                      # First page is an odd page
+$page = 1;                      # Start at page #1
+$pages = 1;                     # Allow %%Pages comment
+while (&lt;&gt;) {
+    if (/^%%Pages:/ &amp;&amp; $pages) {
+        print &quot;%%Pages: (atend)\n&quot;;
+        $pages = 0;
+    } elsif (/^%%Page:/) {      # We have found a page
+        if ($flag) {
+            print &quot;restore\n&quot;;  # restore if it isn't the first
+        }
+        $flag = 1;
+        if ($even) {            # Translate for even pages
+            print &quot;save\n&quot;;     # gsave
+            print &quot;504 426 translate\n&quot;;
+            $even = 0;
+            $page++;
+        } else {                # Translate for odd pages
+            printf(&quot;%%%%Page: %d %d\n&quot;, $page, $page);
+            print &quot;save /showpage {} def\n&quot;;
+            print &quot;504 30 translate\n&quot;;
+            $even = 1;
+        }                       # Code to rotate and shrink
+        print &quot;90 rotate .5 .5 scale\n&quot;;
+    } elsif (/^%%Trail/) {      # Cleanup if a %%Trailer is found
+        if ($flag) {
+            print &quot;restore\n&quot;;
+        }
+        print $_;
+        printf(&quot;%%%%Pages: %d\n&quot;, $page);
+        $flag = 0;
+    } elsif (/^%%EOF/) {        # Cleanup if an %%EOF is found
+        if ($flag) {
+            print &quot;restore\n&quot;;
+        }
+        print $_;
+        $flag = 0;
+    } else {
+        print;
+    }
+}
+</pre>
+
+    <p>Note the basic similarity with the script for the galley proofs. There
+      are some additions, however. Because we are taking two pages and printing
+      them on one page, we need to modify the page numbers. The <b>%%Pages:</b>
+      comment specifies how many pages are in the document. If you specify &quot;%%Pages:
+      (atend)&quot;, you are specifying that you do not know the exact number
+      of pages, but you will give the information later.</p>
+
+    <p>An additional complication is the use of <a href="operators.html#save">save</a>
+      and <a href="operators.html#restore">restore</a> rather than <a href="operators.html#gsave">gsave</a>
+      <a href="operators.html#grestore">grestore</a>. These operators save the
+      <em>entire</em> state of the printer and restore it just as gsave and grestore
+      work with the <em>graphics</em> state. In fact, an implicit gsave is done
+      by save; and an implicit grestore is done by restore. The reason these
+      are used is so that I can redefine <a href="operators.html#showpage">showpage</a>
+      to a do-nothing procedure (<code>/showpage {} def</code>) for the odd pages.
+      This trick prevents the page from being ejected when the odd page does
+      its end of page routines. Unfortunately, this trick only works if the document
+      calls showpage by name. If the document bound showpage up or calls some
+      of the lower level operators, this program would need to be more sophisticated.</p>
+
+    <div class="navbar">
+      <a href="galley.html">Previous Page</a>
+      &bull;
+      <a href="postscript.html">Main Page</a>
+      &bull;
+      <a href="draft.html">Next Page</a>
+    </div>
+  </body>
+</html>

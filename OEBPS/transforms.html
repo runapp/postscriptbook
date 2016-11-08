@@ -1,0 +1,198 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <title>Transformations</title>
+    <link rel="stylesheet" type="text/css" href="postscript.css" />
+  </head>
+  <body>
+    <h1><a name="transformations">Transformations</a></h1>
+
+    <div class="navbar">
+      <a href="color.html">Previous Page</a>
+      &bull;
+      <a href="postscript.html">Main Page</a>
+      &bull;
+      <a href="clipping.html">Next Page</a>
+    </div>
+
+    <p>The PostScript interpreter keeps track of a matrix called the <a href="graphics.html#ctm">current
+	transformation matrix</a>. When constructing an image, the interpreter
+      uses this matrix to convert the world coordinates used by the program into
+      device coordinates used by the printer itself. Generally, the actual contents
+      of the matrix are of little interest to a well-written PostScript program;
+      the reason for this is that the specific contents are device-dependent.
+      A program that uses them might not work properly. PostScript does provide
+      a number of operators, however, that transform the matrix in a device-independent
+      way. These operators allow you to transform the way user space maps onto
+      device space, and they modify the current transformation matrix with a
+      simple matrix transformation. The basic transformation operators are:</p>
+
+    <ul>
+      <li><a href="operators.html#rotate">rotate</a> </li>
+
+      <li><a href="operators.html#translate">translate</a> </li>
+      
+      <li><a href="operators.html#scale">scale</a> </li>
+    </ul>
+
+    <p>It is useful to realize that the current transformation matrix (and,
+      hence the effect of all these operators) is part of the current graphics
+      state and can be saved and restored using the <a href="operators.html#gsave">gsave</a>,
+      and <a href="operators.html#grestore">grestore</a> operators.
+      In addition, the transformations on the matrix affect path components constructed
+      <em>after</em> the transformation. Even if a path is only partially constructed
+      when a transformation is invoked, the parts of the path that were in place
+      before the transformation will be unaffected. </p>
+
+    <h2><a name="rotate">Rotate</a></h2>
+
+    <p>The rotate operator takes a single, numerical operand. This operand
+      specifies how many degrees to rotate the user space around its origin (positive
+      values specify counter clockwise rotations). This transform allows you
+      to do some pretty neat tricks. For example, let&rsquo;s say you have written
+      a routine to draw some complex shape; and you have found that you need
+      to draw it several times at different angles. In a more primitive graphics
+      system, you might need to re-write to routine to take an angle as an argument,
+      but in PostScript you only need to rotate the coordinates with the rotate
+      operator.</p>
+    
+    <p>As a concrete <a href="examples/rotate.html">example</a>,
+      let&rsquo;s say you want to draw lines in a circular pattern so that each line
+      is ten degrees from its neighbors. Rather than figure out the coordinates
+      for each of the 36 lines, we can just draw a horizontal line and rotate
+      it repeatedly to different angles. To do the repeated looping, we can use
+      the <a href="operators.html#for">for</a> operator. The for operator
+      takes four arguments: an initial index value, a step size, a final index
+      value, and a procedure. The operator increments an index from the initial
+      value to the final value, incrementing it by the step size. For each index
+      value, for will push the index on the stack and execute the procedure.
+      This gives you a simple means of looping.</p>
+
+    <p>We start by setting up the for loop. At the beginning of the loop&rsquo;s
+      procedure, we start a new path and save the graphics state. </p>
+
+<pre>
+        0 10 360 {              % Go from 0 to 360 degrees in 10 degree steps
+          newpath               % Start a new path
+          gsave                 % Keep rotations temporary
+</pre>
+
+    <p>We next set the start of the line to (144, 144) and rotate the coordinates,
+      we do not rotate <em>before</em> moving because (144, 144) would then be
+      in a different location.</p>
+
+<pre>
+            144 144 moveto
+            rotate              % Rotate by degrees on stack from 'for'
+</pre>
+
+    <p>We next draw just a horizontal line:</p>
+
+<pre>
+            72 0 rlineto
+            stroke
+</pre>
+
+    <p>Finally, we restore the old graphics state and end the loop.</p>
+
+<pre>
+          grestore              % Get back the unrotated state
+        } for                   % Iterate over angles
+</pre>
+
+    <h2><a name="translate">Translate</a></h2>
+
+    <p>The translate operator takes two operands: an <i>x</i>-coordinate, and
+      a <i>y</i>-coordinate. The translate operator sets the origin of user space
+      to the point that was at the given coordinates in user space. The main
+      use of the translate is to draw copies of a shape in different locations.
+      Typically, a shape will be constructed at the origin, and the shape will
+      be translated to the correct location before it is to be drawn. A simple
+      <a href="examples/translate.html">example</a> translates a box
+      constructed at the origin to the point (72, 72) in the original user space.</p>
+
+    <h2><a name="scale">Scale</a></h2>
+
+    <p>The scale operator takes two arguments: an <i>x</i> scale factor, and
+      a <i>y</i> scale factor. The operator scales each coordinate by its associated
+      scale factor. That is, if you have an <i>x</i> scale factor of 0.5 and
+      a <i>y</i> scale factor of 3, the <i>x</i> coordinate will be reduced by
+      a factor of two while the <i>y</i> coordinate will be magnified by a factor
+      of 3. This operator allows you to change the size and dimensions of objects
+      quite easily.</p>
+
+    <p>A simple <a href="examples/scale.html">example</a> can just
+      scale text in a couple of ways: We can make things narrow:</p>
+
+<pre>
+        gsave
+          72 72 moveto
+          0.5 1 scale           % Make the text narrow
+          (Narrow Text) show    % Draw it
+        grestore
+</pre>
+
+    <p>We can make things tall:</p>
+
+<pre>
+        gsave
+          72 144 moveto
+          1 2 scale             % Make the text tall
+          (Tall Text) show      % Draw it
+        grestore
+</pre>
+
+    <p>We can distort the text completely:</p>
+
+<pre>
+        gsave
+          72 216 moveto
+          2 0.5 scale           % Make the text wide and short
+          (Squeezed Text) show  % Draw it
+        grestore
+</pre>
+
+    <h2><a name="combinations">Combining Transformations</a></h2>
+
+    <p>Each of these transformations merely modifies the current transformation
+      matrix. This means that these operators can be combined for some interesting
+      effects. For example, you can take a normal document and print two of its
+      pages on a single page (reduced and placed side-by-side) simply by translating
+      the first page to one side, rotating the page by ninety degrees and then
+      reducing the page so that it fits. The second page is handled in the same
+      manner, but is translated to the other side of the page. This can be easily
+      done by PostScript post-processors so long as they know where one page ends
+      and the next begins (this is often accomplished using special
+      <a href="language.html#comment">comments</a>).
+      A somewhat simpler <a href="examples/transform.html">example</a>
+      is to draw a simple box and some text translated, rotated, and scaled in
+      various ways. An important thing to remember when viewing this example
+      is that translations are always relative to the <em>current user space</em>.
+      This means that</p>
+
+<pre>
+        0.5 0.5 scale
+        72 72 translate
+</pre>
+
+    <p>will have a different effect on the image than does</p>
+
+<pre>
+        72 72 translate
+        0.5 0.5 scale
+</pre>
+
+    <p>In the first case, the origin will be half an inch in from the bottom
+      and left margins. In the second case, the origin will be an inch in from
+      the two margins.</p>
+
+    <div class="navbar">
+      <a href="color.html">Previous Page</a>
+      &bull;
+      <a href="postscript.html">Main Page</a>
+      &bull;
+      <a href="clipping.html">Next Page</a>
+    </div>
+
+  </body>
+</html>

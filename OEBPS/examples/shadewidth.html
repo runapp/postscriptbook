@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <title>Shade and Width Example</title>
+    <link rel="stylesheet" type="text/css" href="../postscript.css" />
+  </head>
+  <body>
+    <h1>Shade and Width Example</h1>
+
+    <div class="navbar">
+      <a href="../examples.html">Example Index</a>
+    </div>
+
+    <p><a href="shadewidth.ps">Try it.</a></p>
+
+<pre>
+%!
+% Demonstrate shading and width in drawing lines and filling shapes
+
+% Define an operator box which builds a path for a one inch square box
+% Note that box does not draw or fill the box.
+
+/box {
+  newpath
+  moveto                                % Current point is on stack
+  0 72 rlineto                          % Left
+  72 0 rlineto                          % Top
+  0 -72 rlineto                         % Right
+  closepath                             % Bottom
+} def
+
+0 setgray                               % 100% black
+1 setlinewidth                          % One point thick lines
+72 72 moveto 72 144 lineto stroke       % Draw a one inch line
+
+gsave                                   % Save a copy of the current settings
+  0.5 setgray                           % 50% black
+  10 setlinewidth                       % 10 point wide lines
+  144 72 moveto 144 144 lineto stroke   % Draw a one inch wide line
+  216 72 box                            % Build a square path...
+  0.35 setgray                          %   make it a little darker...
+  fill                                  %   and fill it.
+grestore                                % Go back to the original settings
+
+3 setlinewidth                          % Make the box lines wider
+300 72 box stroke                       % Draw a black box
+
+showpage
+</pre>
+
+    <p>If you try this example, you should note a couple of things. Firstly,
+      the black outlined box is a little larger than the gray filled one. This
+      extra width comes from the 3 point wide lines used to draw it&mdash;they are
+      <em>centered</em> about the path of the box. The ink filling the gray box,
+      however, is completely within the path of the box. Also, when shading objects,
+      you must be careful. PostScript makes shades through a process called halftoning.
+      Basically, uniform dots are placed in various patterns to simulate different
+      shades of grey. Unfortunately, various considerations limit how many shades
+      a printer can produce. So some grey tones may come out the same. This may
+      be the case with the filled box and the outlined box when viewed on your
+      screen or printer.</p>
+
+    <div class="navbar">
+      <a href="../examples.html">Example Index</a>
+    </div>
+  </body>
+</html>

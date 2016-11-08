@@ -1,0 +1,60 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+ <head>
+   <title>String Escape Codes</title>
+   <link rel="stylesheet" type="text/css" href="postscript.css" />
+ </head>
+ <body>
+   <h1>String Escape Codes</h1>
+
+   <div class="navbar">
+     <a href="postscript.html">Main Page</a>
+   </div>
+
+   <dl>
+     <dt><code>\n</code></dt>
+     <dd>Newline</dd>
+
+     <dt><code>\r</code></dt>
+     <dd>Carriage return</dd>
+
+     <dt><code>\t</code></dt>
+     <dd>Horizontal TAB</dd>
+
+     <dt><code>\b</code></dt>
+     <dd>Backspace</dd>
+
+     <dt><code>\f</code></dt>
+     <dd>Form feed</dd>
+
+     <dt><code>\\</code></dt>
+     <dd>Backslash</dd>
+
+     <dt><code>\(</code></dt>
+     <dd>Left parenthesis</dd>
+
+     <dt><code>\)</code></dt>
+     <dd>Right parenthesis</dd>
+
+     <dt><code>\ddd</code></dt>
+     <dd>The character code ddd, where ddd is in octal.</dd>
+   </dl>
+
+   <p>In addition to these basic codes, a backslash just before a newline
+     allows you to break a string across two lines without inserting a newline
+     into the string. That is, the string:</p>
+
+<pre>
+(This is a \
+string \
+that has no \
+newlines)
+</pre>
+
+   <p>is equivalent to the string:<code>(This is a string that has no newlines)</code>.</p>
+   
+   <div class="navbar">
+     <a href="postscript.html">Main Page</a>
+   </div>
+ </body>
+</html>

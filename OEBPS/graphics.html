@@ -1,0 +1,91 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <title>Graphics Concepts</title>
+    <link rel="stylesheet" type="text/css" href="postscript.css" />
+  </head>
+  <body>
+
+    <h1><a name="graphics">Graphics Concepts</a></h1>
+    
+    <div class="navbar">
+      <a href="what-is-it.html">Previous Page</a>
+      &bull;
+      <a href="postscript.html">Main Page</a>
+      &bull;
+      <a href="language.html">Next Page</a>
+    </div>
+    
+    <p>There are a few concepts that you need to know about before we dive
+      into the language itself. These concepts are the concepts PostScript uses
+      to describe and manipulate images on a page. There are really only a few.</p>
+    
+    <dl>
+      <dt><a name="devspace"></a><b>Device Space</b></dt>
+      
+      <dd>This is the coordinate space understood by the printer hardware. This
+	coordinate system is typically measured in terms of the device&rsquo;s resolution.
+	There is really nothing else that can be said about this space, as PostScript
+	programs are typically not expressed using it.</dd>
+      
+      <dt><a name="userspace"></a><b>User Space</b></dt>
+      
+      <dd>This is the coordinate system used by PostScript programs to describe
+	the location of points and lines. User space is essentially the same as
+	the first quadrant of the standard coordinate system used in high school
+	math classes. Point (0, 0) is in the lower left corner. Coordinates are
+	real numbers, so there is no set resolution in user space. The interpreter
+	automatically converts user space coordinates to device space.</dd>
+      
+      <dt><a name="ctm"></a><b>Current Transformation Matrix</b></dt>
+      
+      <dd>The transformation of user space coordinates to device space coordinates
+	is done through the current transformation matrix. This matrix is a three
+	by three matrix that allows the user to rotate, scale, and translate the
+	entire user space within the device space. This is the source of a lot
+	of PostScript&rsquo;s power, as will be demonstrated later.</dd>
+      
+      <dt><a name="path"></a><b>Path</b></dt>
+      
+      <dd>A path is a collection of (possibly disjoint) line segments and curves
+	arranged on the page. The path does not describe actual ink on the paper;
+	it merely describes an imaginary tracing over the page. There are operators
+	which allow the user to draw ink along the path (<a href="operators.html#stroke">stroke</a>),
+	fill an enclosed path with ink (<a href="operators.html#fill">fill</a>),
+	or clip out all future images that are outside the path (<a href="operators.html#clip">clip</a>).</dd>
+      
+      <dt><a name="currentpath"></a><b>Current Path</b></dt>
+      
+      <dd>This is the path that the PostScript program is creating at the moment.
+	The current path is assembled piece by piece.</dd>
+      
+      <dt><a name="clippath"></a><b>Clipping Path</b></dt>
+      
+      <dd>The PostScript rendering system will ignore any part of a line segment,
+	curve, or bitmap that extends outside a certain region; it will only draw
+	the parts of those elements which are within the region. The region is
+	described by a path called the clipping path. The clipping path is usually
+	a rectangle about a quarter of an inch in from the edge of the page, but
+	it can easily be set by the user to an arbitrary path.</dd>
+      
+      <dt><a name="graphstate"></a><b>Graphics State</b></dt>
+      
+      <dd>This is a collection of various settings that describe the current
+	state of the graphics system. Things like the current path, the current
+	font, and the current transformation matrix make up the graphics state.
+	Often, a program will need to temporarily save a graphics state to be used
+	later. There are a couple of ways of doing this, but the easiest is to
+	push the state onto a special graphics state stack and pop it back later.
+	This can be accomplished with the <a href="operators.html#gsave">gsave</a>,
+	and <a href="operators.html#grestore">grestore</a> operators.</dd>
+    </dl>
+    
+    <div class="navbar">
+      <a href="what-is-it.html">Previous Page</a>
+      &bull;
+      <a href="postscript.html">Main Page</a>
+      &bull;
+      <a href="language.html">Next Page</a>
+    </div>
+  </body>
+</html>

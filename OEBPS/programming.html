@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <title>Programming in PostScript</title>
+    <link rel="stylesheet" type="text/css" href="postscript.css" />
+  </head>
+  <body>
+    <h1><a name="programming">Programming in PostScript</a></h1>
+
+    <div class="navbar">
+      <a href="language.html">Previous Page</a>
+      &bull;
+      <a href="postscript.html">Main Page</a>
+      &bull;
+      <a href="drawing.html">Next Page</a>
+    </div>
+
+
+    <p>Programming in PostScript is really pretty easy. The fundamentals are
+      that you push operands onto the operand stack by naming them, and then
+      you invoke the operator to use them. That&rsquo;s really all there is to it. The
+      real art is knowing which operator to use. Operators to draw and put text
+      on the screen will be covered later, and these make up the bulk of PostScript
+      code, but there are a couple that are used mainly for maintaining the program
+      itself. </p>
+
+    <p>The first of these operators is <a href="operators.html#def">def</a>.
+      &ldquo;def&rdquo; is responsible for entering a definition into the top-most dictionary
+      on the dictionary stack. The top operand on the operand stack is the value,
+      and the operand below the value is the key (and should be a name). Let&rsquo;s
+      say that we wanted to define the name &ldquo;x&rdquo; to have a value of 5. The PostScript
+      to do this is: <code>/x 5 def</code>. Notice the use of the slash on the &ldquo;x&rdquo;.
+      The slash ensures that the <em>name</em> &ldquo;x&rdquo; will be pushed onto the stack
+      and not any value it may already have in the dictionary stack.</p>
+    
+    <p>&ldquo;def&rdquo; is also used to define new operators. The value in this case is
+      just a procedure. The following code defines an operator &ldquo;foo&rdquo; which adds
+      its top-most two operands and multiplies the result with the next operand
+      on the stack: <code>/foo {add mul} def</code>. Remember, operators that return
+      results push them onto the stack, where they may be used later.</p>
+
+    <p>An important point to know when defining procedures is that the elements
+      in the procedure are not evaluated until the procedure is invoked.
+      That means that in the procedure <code>{1 2 add 3 mul}</code>, the actual names
+      &ldquo;add&rdquo; and &ldquo;mul&rdquo; are stored in the array that is the procedure. This is
+      different from an actual array in which the components <em>are</em> evaluated
+      when the array is created. For contrast, the array <code>[1 2 add 3 mul]</code>
+      contains one object: the <em>number</em> 9.</p>
+
+    <p>This delayed evaluation of procedure components has two important effects.
+      First, the definition of an operator used in a procedure is the one that
+      is in effect when the procedure is run, <em>not</em> when it is defined.
+      Second, because each operator has to be looked up each time the procedure
+      is invoked, things can be a little slow. Fortunately, PostScript provides
+      a handy operator to replace each name in a procedure object with its current
+      definition. This operator is called <a href="operators.html#bind">bind</a>,
+      and it can speed up your program considerably. Bind is typically used as:</p>
+
+    <pre>/foo {add mul} bind def</pre>
+    
+    <p>This defines foo to be a procedure array with two components: the procedures
+      for add and mul. Note that, if add or mul is re-defined after defining
+      foo, foo will have the <em>same</em> behavior as before. Without the use
+      of bind, foo&rsquo;s behavior would change.</p>
+    
+    <div class="navbar">
+      <a href="language.html">Previous Page</a>
+      &bull;
+      <a href="postscript.html">Main Page</a>
+      &bull;
+      <a href="drawing.html">Next Page</a>
+    </div>
+  </body>
+</html>

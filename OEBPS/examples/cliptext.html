@@ -1,0 +1,45 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <title>Clipping to Text</title>
+    <link rel="stylesheet" type="text/css" href="../postscript.css" />
+  </head>
+  <body>
+    <h1>Clipping to Text</h1>
+
+    <div class="navbar">
+      <a href="../examples.html">Example Index</a>
+    </div>
+
+    <p><a href="cliptext.ps">Try it.</a></p>
+
+<PRE>
+%!
+gsave                                     % Save old clip path
+  /Times-Roman findfont 60 scalefont setfont
+
+  72 72 moveto (Clipping) true charpath   % Set up the text's path
+  clip                                    % Clip to it
+
+  174 72 translate                        % Set our origin to middle
+  0 2 360 {                               % For every second degree of circle
+    newpath
+
+    gsave
+      rotate                              % Rotate to angle
+      0 0 moveto                          % From new origin
+      300 0 rlineto                       % Setup a 300 point long line
+      stroke                              % ... and draw it
+    grestore
+  } for
+
+grestore                                  % Restore old clip path
+
+showpage
+</PRE>
+
+    <div class="navbar">
+      <a href="../examples.html">Example Index</a>
+    </div>
+  </body>
+</html>

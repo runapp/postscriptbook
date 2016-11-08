@@ -1,0 +1,183 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <title>Drawing and Filling Shapes</title>
+    <link rel="stylesheet" type="text/css" href="postscript.css" />
+  </head>
+  <body>
+    <h1><a name="drawing">Drawing and Filling Shapes</a></h1>
+
+    <div class="navbar">
+      <a href="programming.html">Previous Page</a>
+      &bull;
+      <a href="postscript.html">Main Page</a>
+      &bull;
+      <a href="text.html">Next Page</a>
+    </div>
+
+    <h2><a name="principles">Principles</a></h2>
+
+    <p>The main purpose of PostScript is to draw graphics on the page. One
+      of the elegant aspects of PostScript is that even text is a kind of graphic.
+      The main task that must be mastered, then, is constructing paths which
+      may be used to create the image. </p>
+
+    <p>To draw and fill shapes, the basic sequence is: </p>
+
+    <ul>
+      <li>Start the path with the <a href="operators.html#newpath" name="4">newpath</a>
+	operator.</li>
+  
+      <li>Construct the path out of line segments and curves (the path need not
+	be contiguous).</li>
+
+      <li>Draw the path with the <a href="operators.html#stroke">stroke</a>
+	operator or fill it in with the <a href="operators.html#fill">fill</a>
+	operator.</li>
+    </ul>
+
+    <p>This basic sequence can be modified to do more complicated things as
+      we will see later.</p>
+
+    <h2><a name="drawbox">Drawing a Box</a></h2>
+
+    <p>In this first example, we will draw a square inch box toward the lower
+      left corner of the page. We start off by defining a function to convert
+      inches into PostScript's main unit, the point (a point is defined in PostScript
+      as 1/72th of an inch, which is slightly shorter than a true printer&rsquo;s point of 1/72.27 inch).
+      The conversion is simple, we just multiply the number
+      of inches by 72. This gives us the function</p>
+
+    <pre>/inch {72 mul} def</pre>
+    
+    <p>To actually draw the square, we start a new path and move the current
+      point to a point an inch in from both margins. This is accomplished with
+      the code:</p>
+    
+<pre>
+newpath
+1 inch 1 inch moveto
+</pre>
+    
+    <p>At this point, the path contains only the point (72, 72). We add in
+      line segments leading away from this point with the <a href="operators.html#lineto">lineto</a>
+      operator. This operator adds a line segment from the current point to the
+      point specified to lineto and makes that point the new current point. We
+      can build three sides of the box as follows:</p>
+    
+<pre>
+2 inch 1 inch lineto
+2 inch 2 inch lineto
+1 inch 2 inch lineto
+</pre>
+    
+    <p>We can add the last line by telling PostScript to close up the path
+      with the smallest possible line segment. The <a href="operators.html#closepath">closepath</a>
+      operator does this. This operator is especially useful if you need a closed
+      figure for filling. Once we have closed the path, we can draw it with the
+      stroke operator. We finish off the example by ejecting the page (if you
+      are using a printer). PostScript ejects a page with the <a href="operators.html#showpage">showpage</a>
+      operator:</p>
+
+<pre>
+closepath
+stroke
+showpage
+</pre>
+
+    <p>You can view and try the <a href="examples/box1.html">complete example</a>, if you like.</p>
+
+    <h2><a name="refinements">Refinements</a></h2>
+
+    <p>The lineto operator works in absolute coordinates within user space.
+      That is, <code>72 72 lineto</code> adds a line segment from the current point
+      to the point (72, 72) in user space. In drawing the box, however, it is
+      more convenient to ignore the absolute coordinates of the box's vertexes
+      and think instead of the lengths and directions of its sides. Fortunately,
+      PostScript provides a version of lineto which takes <em>relative</em> coordinates
+      instead. This is the <a href="operators.html#rlineto">rlineto</a>
+      operator. rlineto adds the coordinates given as operands to the coordinates
+      of the current point in the path to find the destination point. That is,
+      <code>10 20 rlineto</code> will draw a line from the current point to a point
+      10 points to the right and 20 points toward the top of the page. This is
+      in contrast to <code>10 20 lineto</code> which adds a line segment which <em>always</em>
+      ends at (10, 20). </p>
+
+    <p>To see how we can use rlineto, let's replace the lineto lines in the
+      last example with the following code:</p>
+
+<pre>
+1 inch 0 inch rlineto
+0 inch 1 inch rlineto
+-1 inch 0 inch rlineto
+</pre>
+
+    <p>This <a href="examples/box2.html">new example</a> will draw
+      the same figure, but it draws the lines using relative coordinates instead
+      of absolute. This makes it a little easier to visualize and has the added
+      benefit that the same code can draw the three lines at a different location.
+      Note that a negative relative <i>x</i> coordinate moves the point in the
+      left direction while a negative relative <i>y</i> coordinate moves the
+      point down the page.</p>
+
+    <h2><a name="filling">Filling Shapes</a></h2>
+
+    <p>Filling a shape is just as easy as drawing it. You create the path using
+      the standard path creation operators, but instead of calling stroke at
+      the end, you invoke the <a href="operators.html#fill">fill</a>
+      operator. The fill operator will fill the path with the current ink settings.
+      If you want to fill a shape with a pattern, you will need to do some special
+      tricks which we will cover later. We will use the box from above as an
+      <a href="examples/fill-box.html">example</a>, but we replace
+      the original invocation of stroke with fill.</p>
+    
+    <p>Fill uses a simple winding rule (which is described in the <i><a href="books.html#redbook">Programming
+	  Language Reference Manual</a></i>) to determine what parts of the page
+      are inside or outside the path. The regions that are inside are painted.
+      Note that arbitrarily complex shapes can be filled with this operator so
+      long as you have enough memory on your PostScript interpreter. You can
+      easily fill in different shades and even some patterns, but to fill an
+      area with a complex image takes some special effects which we will cover
+      later.</p>
+
+    <h2><a name="shadeandwidth">Shading and Width</a></h2>
+    
+    <p>In PostScript, you can view lines as being drawn by pens that have a
+      given width and ink as having particular shades. You are not restricted
+      to completely black ink and one-point wide lines. PostScript provides two
+      handy operators to change these characteristics. </p>
+
+    <p>The <a href="operators.html#setgray">setgray</a> operator
+      sets the intensity of the ink used in drawing lines and filling shapes
+      (actually, setgray affects all subsequent markings made on the page). setgray
+      takes a single numerical argument between 0 and 1. &ldquo;0&rdquo; signifies black,
+      and &ldquo;1&rdquo; signifies white. Numbers between these two values signify various
+      shades of gray.</p>
+    
+    <p>The <a href="operators.html#setlinewidth">setlinewidth</a>
+      operator does just what its name suggests: it sets the width of lines
+      to be drawn. It takes a single numerical argument which is the width of
+      the line in points. setlinewidth affects all lines <em>stroked</em> after
+      the operator is invoked.</p>
+
+    <p>Both of these operators affect the markings placed on the page after
+      they are called... they do not effect the path until it is stroked or filled.
+      In particular, you can not set the width or gray level for one part of
+      the path and then change it for another... they are the same for all parts
+      of the path, since it is stroked or filled only once. Also, both of these
+      operators affect part of the graphics state and can be saved with <a href="operators.html#gsave">gsave</a>
+      and restored with <a href="operators.html#grestore">grestore</a>.</p>
+
+    <p>I have worked up an <a href="examples/shadewidth.html">example</a>
+      using both these operators. I also demonstrate how you can use gsave and
+      grestore to control the graphics state.</p>
+
+    <div class="navbar">
+      <a href="programming.html">Previous Page</a>
+      &bull;
+      <a href="postscript.html">Main Page</a>
+      &bull;
+      <a href="text.html">Next Page</a>
+    </div>
+  </body>
+</html>

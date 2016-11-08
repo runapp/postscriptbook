@@ -1,0 +1,46 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <title>Scale</title>
+    <link rel="stylesheet" type="text/css" href="../postscript.css" />
+  </head>
+  <body>
+    <h1>Scale</h1>
+
+    <div class="navbar">
+      <a href="../examples.html">Example Index</a>
+    </div>
+
+    <p><a href="scale.ps">Try it.</a></p>
+
+<pre>
+%!
+% Example of scaled image (text)
+
+/Times-Roman findfont 40 scalefont setfont
+
+gsave
+  72 72 moveto
+  0.5 1 scale           % Make the text narrow
+  (Narrow Text) show    % Draw it
+grestore
+
+gsave
+  72 144 moveto
+  1 2 scale             % Make the text tall
+  (Tall Text) show      % Draw it
+grestore
+
+gsave
+  72 216 moveto
+  2 0.5 scale           % Make the text wide and short
+  (Squeezed Text) show  % Draw it
+grestore
+
+showpage
+</pre>
+    <div class="navbar">
+      <a href="../examples.html">Example Index</a>
+    </div>
+  </body>
+</html>

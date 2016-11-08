@@ -1,0 +1,55 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <title>What is PostScript?</title>
+    <link rel="stylesheet" type="text/css" href="postscript.css" />
+  </head>
+  <body>
+
+    <h1><a name="whatisit">What is PostScript?</a></h1>
+    
+    <div class="navbar">
+      <a href="postscript.html">Main Page</a> &bull; <a href="graphics.html">Next Page</a>
+    </div>
+    
+    <p>PostScript is a programming language optimized for printing graphics
+      and text (whether on paper, film, or <acronym>CRT</acronym> is immaterial). In the jargon
+      of the day, it is a <b>page description language</b>. It was introduced
+      by Adobe in 1985 and first (to my knowledge) appeared in the Apple LaserWriter.
+      The main purpose of PostScript was to provide a convenient language in
+      which to describe images in a device independent manner. This device independence
+      means that the image is described without reference to any specific device
+      features (<i>e.g.</i> printer resolution) so that the same description
+      could be used on any PostScript printer (say, a LaserWriter or a Linotron)
+      without modification. In practice, some PostScript files do make assumptions
+      about the target device (such as its resolution or the number of paper
+      trays it has), but this is bad practice and limits portability.</p>
+    
+    <p>The language itself, which is typically interpreted, is stack-based
+      in the same manner as an <acronym>RPN</acronym> calculator. A program pushes arguments for
+      an operator onto a stack and then invokes the operator. Typically, the
+      operator will have some result which is left at the top of the stack. As
+      an example, let us say we want to multiply 12 and 134. We would use the
+      following PostScript code:</p>
+    
+    <pre>12 134 mul</pre>
+    
+    <p>The first two words &ldquo;12&rdquo; and &ldquo;134&rdquo; push the numbers 12 and 134 onto
+      the stack. <a href="operators.html#mul">&ldquo;mul&rdquo;</a> invokes the
+      multiply operator which pops two values off the stack, multiplies them,
+      and then pushes the result back onto the stack. The resulting value can
+      be left there to be used by another operator later in the program. </p>
+    
+    <p>To follow the conventions used by Adobe in their manuals, I will synopsize
+      operators using the following scheme: <i>arg-1</i> <i>arg-2</i> ... <b>operator</b>
+      <i>result</i>. This scheme means that, to use <b>operator</b>, you must
+      push arguments <i>arg-1</i>, <i>arg-2</i>, and so on before invoking the
+      operator. <b>operator</b> will return the result: <i>result</i>. Many operators
+      return no result (they have some side-effect); these will be shown as returning
+      &ldquo;<b>-</b>&rdquo;.</p>
+    
+    <div class="navbar">
+      <a href="postscript.html">Main Page</a> &bull; <a href="graphics.html">Next Page</a>
+    </div>
+  </body>
+</html>
